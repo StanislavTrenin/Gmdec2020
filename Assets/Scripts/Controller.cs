@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class Controller : MonoBehaviour
@@ -11,12 +9,14 @@ public class Controller : MonoBehaviour
     [SerializeField] private Vector2 fieldSize;
     [SerializeField] private GameObject characterInstance;
     [SerializeField] private GameObject fieldInstance;
+    [SerializeField] private Material lineMaterial;
 
     private Field[,] fields;
     private Queue<Character> playerCharactersQueue;
     private Queue<Character> enemyCharactersQueue;
     private bool isPlayerStep;
     private Character activeCharacter;
+    private Vector2[] shortestPath;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +25,7 @@ public class Controller : MonoBehaviour
         GenerateCharacters();
         isPlayerStep = true;
         activeCharacter = playerCharactersQueue.Dequeue();
+        shortestPath = null;
     }
 
     private void GenerateField()
@@ -42,6 +43,7 @@ public class Controller : MonoBehaviour
                 field.type = fieldTypes[i, j];
                 field.x = i;
                 field.y = j;
+                field.Notify += GenerateShortestPath;
                 fields[i, j] = field;
             }
         }
@@ -83,6 +85,7 @@ public class Controller : MonoBehaviour
 
     public void EndOfTurn()
     {
+        shortestPath = null;
         if (isPlayerStep)
         {
             playerCharactersQueue.Enqueue(activeCharacter);
@@ -95,5 +98,96 @@ public class Controller : MonoBehaviour
             isPlayerStep = true;
             activeCharacter = playerCharactersQueue.Dequeue();
         }
+    }
+
+    private void OnPostRender()
+    {
+        if (shortestPath != null)
+        {
+            GL.Begin(GL.LINES);
+            lineMaterial.SetPass(0);
+            GL.Color(new Color(1, 1, 0));
+            foreach (Vector2 coordinate in shortestPath)
+            {
+                GL.Vertex3(coordinate.x, coordinate.y, 0);
+            }
+            GL.End();
+        }
+    }
+
+    private void GenerateShortestPath(int finishX, int finishY)
+    {
+        Field startField = activeCharacter.field;
+        Field finishField = fields[finishX, finishY];
+        if (finishField.type != FieldType.FLOR)
+        {
+            shortestPath = null;
+            return;
+        }
+        Queue<Field> fieldsToCheck = new Queue<Field>();
+        Stack<Field> path = new Stack<Field>();
+        Dictionary<Field, int> visited = new Dictionary<Field, int>();
+        visited.Add(startField, 0);
+        fieldsToCheck.Enqueue(startField);
+        int[] addX = {-1, 0, 1, -1, 1, -1, 0, 1};
+        int[] addY = {-1, -1, -1, 0, 0, 1, 1, 1};
+        while (fieldsToCheck.Count > 0)
+        {
+            Field f = fieldsToCheck.Dequeue();
+            int value = visited[f];
+            int x = f.x;
+            int y = f.y;
+            if (f == finishField)
+            {
+                path.Push(f);
+                while (value > 0)
+                {
+                    value--;
+                    for (int i = 0; i < addX.Length; i++)
+                    {
+                        try
+                        {
+                            Field nearField = fields[x + addX[i], y + addY[i]];
+                            if (visited.ContainsKey(nearField) && visited[nearField] == value)
+                            {
+                                f = nearField;
+                                path.Push(f);
+                                x = f.x;
+                                y = f.y;
+                                break;
+                            }
+                        }
+                        catch (IndexOutOfRangeException e)
+                        {
+                    
+                        }
+                    }
+                }
+                shortestPath = new Vector2[path.Count];
+                for (int i = 0; i < shortestPath.Length; i++)
+                {
+                    Field pathPoint = path.Pop();
+                    shortestPath[i] = new Vector2(pathPoint.x + 0.5f, pathPoint.y + 0.5f) * fieldSize;
+                }
+                return;
+            }
+            for (int i = 0; i < addX.Length; i++)
+            {
+                try
+                {
+                    Field nearField = fields[x + addX[i], y + addY[i]];
+                    if (nearField.type == FieldType.FLOR && !visited.ContainsKey(nearField))
+                    {
+                        visited[nearField] = value + 1;
+                        fieldsToCheck.Enqueue(nearField);
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    
+                }
+            }
+        }
+        shortestPath = null;
     }
 }

@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class Field : MonoBehaviour
 {
+    public delegate void FieldClicked(int x, int y);
+    public event FieldClicked Notify;
+
     public int x;
     public int y;
+
     public FieldType type
     {
-        get { return _character == null ? _type : FieldType.OBSTACLE; }
+        get { return _character == null ? _type : FieldType.WALL; }
         set { _type = value; }
     }
 
@@ -21,5 +25,10 @@ public class Field : MonoBehaviour
 
     private FieldType _type;
     private Character _character;
+
+    void OnPointerClick()
+    {
+        Notify?.Invoke(x, y);
+    }
 
 }
