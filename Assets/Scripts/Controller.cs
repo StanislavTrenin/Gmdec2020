@@ -12,13 +12,16 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject fieldInstance;
 
     private Field[,] fields;
-    private OrderedDictionary charactersQueue;
+    private Queue<Character> playerCharactersQueue;
+    private Queue<Character> enemyCharactersQueue;
+    private bool isPlayerStep;
 
     // Start is called before the first frame update
     void Start()
     {
         GenerateField();
         GenerateCharacters();
+        isPlayerStep = true;
     }
 
     private void GenerateField()
@@ -63,6 +66,20 @@ public class Controller : MonoBehaviour
         GameObject characterObject = Instantiate(characterInstance);
         Character character = characterObject.GetComponent<Character>();
         character.field = fields[randX, randY];
+        character.isPlayer = isPlayer;
         character.initiative = initiative;
+        if (isPlayer)
+        {
+            playerCharactersQueue.Enqueue(character);
+        }
+        else
+        {
+            enemyCharactersQueue.Enqueue(character);
+        }
+    }
+
+    public void EndOfTurn()
+    {
+        
     }
 }
