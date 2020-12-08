@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class Controller : MonoBehaviour
@@ -15,6 +16,7 @@ public class Controller : MonoBehaviour
     private Queue<Character> playerCharactersQueue;
     private Queue<Character> enemyCharactersQueue;
     private bool isPlayerStep;
+    private Character activeCharacter;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,7 @@ public class Controller : MonoBehaviour
         GenerateField();
         GenerateCharacters();
         isPlayerStep = true;
+        activeCharacter = playerCharactersQueue.Dequeue();
     }
 
     private void GenerateField()
@@ -80,6 +83,17 @@ public class Controller : MonoBehaviour
 
     public void EndOfTurn()
     {
-        
+        if (isPlayerStep)
+        {
+            playerCharactersQueue.Enqueue(activeCharacter);
+            isPlayerStep = false;
+            activeCharacter = enemyCharactersQueue.Dequeue();
+        }
+        else
+        {
+            enemyCharactersQueue.Enqueue(activeCharacter);
+            isPlayerStep = true;
+            activeCharacter = playerCharactersQueue.Dequeue();
+        }
     }
 }
