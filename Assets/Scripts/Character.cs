@@ -34,7 +34,20 @@ public class Character : MonoBehaviour
     [SerializeField] [Range(0, 50)] private int guts;
     
     [Header("Other")]
-    [SerializeField] private Vector2Int position;
-    [SerializeField] private int initiative;
+    [SerializeField] public int initiative;
+
+    public bool isPlayer;
+    public Field field
+    {
+        get { return _field; }
+        set
+        {
+            value.character = null;
+            _field = value;
+            _field.character = this;
+            gameObject.transform.SetParent(_field.gameObject.transform);
+        }
+    }
+    private Field _field;
 
 }
