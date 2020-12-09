@@ -70,7 +70,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: cc24e3d2730d7114a9a85a918600be8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -147,5 +147,5 @@ MonoBehaviour:
   legsArmor: 0
   logic: 0
   guts: 0
-  position: {x: 0, y: 0}
   initiative: 1
+  isPlayer: 0

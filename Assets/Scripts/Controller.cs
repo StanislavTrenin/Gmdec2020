@@ -11,8 +11,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private Material lineMaterial;
 
     private Field[,] fields;
-    private Queue<Character> playerCharactersQueue;
-    private Queue<Character> enemyCharactersQueue;
+    private Queue<Character> playerCharactersQueue = new Queue<Character>();
+    private Queue<Character> enemyCharactersQueue = new Queue<Character>();
     private bool isPlayerStep;
     private Character activeCharacter;
     private Vector2[] shortestPath;
@@ -33,6 +33,8 @@ public class Controller : MonoBehaviour
         FieldType[,] fieldTypes = MapDeserializer.Deserialize("demo_map.txt");
         int rowsCount = fieldTypes.GetUpperBound(0) + 1;
         int columnsCount = fieldTypes.GetUpperBound(1) + 1;
+        fields = new Field[columnsCount, rowsCount];
+        
         for (int i = 0; i < columnsCount; i++)
         {
             for (int j = 0; j < rowsCount; j++)
@@ -68,7 +70,7 @@ public class Controller : MonoBehaviour
             randX = Random.Range(0, columnsCount);
             randY = Random.Range(0, rowsCount);
         } while (fields[randX, randY].type != FieldType.FLOR);
-        GameObject characterObject = Instantiate(characterInstance);
+        GameObject characterObject = Instantiate(characterInstance, fields[randX, randY].gameObject.transform);
         Character character = characterObject.GetComponent<Character>();
         character.field = fields[randX, randY];
         character.isPlayer = isPlayer;

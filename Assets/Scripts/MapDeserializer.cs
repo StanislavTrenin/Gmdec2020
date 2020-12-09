@@ -9,7 +9,8 @@ public static class MapDeserializer
 
     public static FieldType[,] Deserialize(string mapName)
     {
-        TextAsset textAsset = Resources.Load($"Data/Maps/{mapName}") as TextAsset;
+        mapName = mapName.Remove(mapName.IndexOf(".txt"));
+        var textAsset = Resources.Load<TextAsset>($"Data/Maps/{mapName}");
         string[] rows = textAsset.text.Split('\n');
         int rowsCount = rows.Length;
         int columnsCount = rows[0].Split(' ').Length;

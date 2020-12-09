@@ -656,10 +656,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b90f941ca184949b3dfcc47c2ae7c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldSize: {x: 0, y: 0}
+  fieldSize: {x: 1, y: 1}
   characterInstance: {fileID: 3715083597503872721, guid: 3d8239a3f7fcaf743aea83d57f132ce9, type: 3}
-  fieldInstance: {fileID: 0}
-  lineMaterial: {fileID: 0}
+  fieldInstance: {fileID: 4618794286585845510, guid: 5968bfb1cd022d143816d578d63bfdf7, type: 3}
+  lineMaterial: {fileID: 2100000, guid: 802f788973f722249aca4452f61a3e21, type: 2}
 --- !u!4 &1612494881
 Transform:
   m_ObjectHideFlags: 0

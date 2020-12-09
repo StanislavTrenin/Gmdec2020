@@ -45,7 +45,6 @@ public class Character : MonoBehaviour
             value.character = null;
             _field = value;
             _field.character = this;
-            gameObject.transform.SetParent(_field.gameObject.transform);
         }
     }
     private Field _field;
