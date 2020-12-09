@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -23,6 +22,7 @@ public class Controller : MonoBehaviour
     {
         GenerateField();
         GenerateCharacters();
+        SetCamera();
         isPlayerStep = true;
         activeCharacter = playerCharactersQueue.Dequeue();
         shortestPath = null;
@@ -189,5 +189,12 @@ public class Controller : MonoBehaviour
             }
         }
         shortestPath = null;
+    }
+
+    private void SetCamera()
+    {
+        CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        cameraController.SetSize((fields.GetUpperBound(1) + 1) * fieldSize.x,
+            (fields.GetUpperBound(0) + 1) * fieldSize.y);
     }
 }
