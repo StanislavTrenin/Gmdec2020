@@ -14,7 +14,28 @@ public class Field : MonoBehaviour
     public FieldType type
     {
         get { return _character == null ? _type : FieldType.WALL; }
-        set { _type = value; }
+        set
+        {
+            _type = value;
+            switch (_type)
+            {
+                case FieldType.FLOR:
+                {
+                    _spriteRenderer.color = Color.green;
+                    break;
+                }
+                case FieldType.WALL:
+                {
+                    _spriteRenderer.color = Color.black;
+                    break;
+                }
+                case FieldType.OBSTACLE:
+                {
+                    _spriteRenderer.color = new Color(0.647f, 0.165f, 0.165f);
+                    break;
+                }
+            }
+        }
     }
 
     public Character character
@@ -25,6 +46,12 @@ public class Field : MonoBehaviour
 
     private FieldType _type;
     private Character _character;
+    private SpriteRenderer _spriteRenderer;
+
+    void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void OnPointerClick()
     {

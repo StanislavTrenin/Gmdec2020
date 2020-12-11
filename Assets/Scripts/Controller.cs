@@ -5,11 +5,11 @@ using Random = UnityEngine.Random;
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField] private Vector2 fieldSize;
     [SerializeField] private GameObject characterInstance;
     [SerializeField] private GameObject fieldInstance;
     [SerializeField] private Material lineMaterial;
 
+    private Vector2 fieldSize;
     private Field[,] fields;
     private Queue<Character> playerCharactersQueue = new Queue<Character>();
     private Queue<Character> enemyCharactersQueue = new Queue<Character>();
@@ -20,6 +20,7 @@ public class Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        fieldSize = fieldInstance.transform.localScale;
         GenerateField();
         GenerateCharacters();
         SetCamera();
@@ -40,7 +41,7 @@ public class Controller : MonoBehaviour
             for (int j = 0; j < rowsCount; j++)
             {
                 GameObject fieldObject = Instantiate(fieldInstance);
-                fieldObject.transform.position = new Vector2(i, j) * fieldSize;
+                fieldObject.transform.position = new Vector2(i, rowsCount - j - 1) * fieldSize + fieldSize * 0.5f;
                 Field field = fieldObject.GetComponent<Field>();
                 field.type = fieldTypes[i, j];
                 field.x = i;

@@ -36,7 +36,16 @@ public class Character : MonoBehaviour
     [Header("Other")]
     [SerializeField] public int initiative;
 
-    public bool isPlayer;
+    public bool isPlayer
+    {
+        get { return _isPlayer; }
+        set
+        {
+            _isPlayer = value;
+            _spriteRenderer.flipX = !_isPlayer;
+        }
+    }
+    public bool _isPlayer;
     public Field field
     {
         get { return _field; }
@@ -48,5 +57,11 @@ public class Character : MonoBehaviour
         }
     }
     private Field _field;
+    private SpriteRenderer _spriteRenderer;
+
+    void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
 }
