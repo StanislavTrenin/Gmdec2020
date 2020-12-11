@@ -15,18 +15,18 @@ public class Controller : MonoBehaviour
     private Queue<Character> enemyCharactersQueue = new Queue<Character>();
     private bool isPlayerStep;
     private Character activeCharacter;
-    private Vector2[] shortestPath;
+    private LineRenderer lineRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
+        lineRenderer = GetComponent<LineRenderer>();
         fieldSize = fieldInstance.transform.localScale;
         GenerateField();
         GenerateCharacters();
         SetCamera();
         isPlayerStep = true;
         activeCharacter = playerCharactersQueue.Dequeue();
-        shortestPath = null;
     }
 
     private void GenerateField()
@@ -88,7 +88,7 @@ public class Controller : MonoBehaviour
 
     public void EndOfTurn()
     {
-        shortestPath = null;
+        lineRenderer.positionCount = 0;
         if (isPlayerStep)
         {
             playerCharactersQueue.Enqueue(activeCharacter);
@@ -103,28 +103,13 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void OnPostRender()
-    {
-        if (shortestPath != null)
-        {
-            GL.Begin(GL.LINES);
-            lineMaterial.SetPass(0);
-            GL.Color(new Color(1, 1, 0));
-            foreach (Vector2 coordinate in shortestPath)
-            {
-                GL.Vertex3(coordinate.x, coordinate.y, 0);
-            }
-            GL.End();
-        }
-    }
-
     private void GenerateShortestPath(int finishX, int finishY)
     {
         Field startField = activeCharacter.field;
         Field finishField = fields[finishX, finishY];
         if (finishField.type != FieldType.FLOR)
         {
-            shortestPath = null;
+            lineRenderer.positionCount = 0;
             return;
         }
         Queue<Field> fieldsToCheck = new Queue<Field>();
@@ -166,12 +151,15 @@ public class Controller : MonoBehaviour
                         }
                     }
                 }
-                shortestPath = new Vector2[path.Count];
+                int rowsCount = fields.GetUpperBound(0) + 1;
+                Vector3[] shortestPath = new Vector3[path.Count];
                 for (int i = 0; i < shortestPath.Length; i++)
                 {
                     Field pathPoint = path.Pop();
-                    shortestPath[i] = new Vector2(pathPoint.x + 0.5f, pathPoint.y + 0.5f) * fieldSize;
+                    shortestPath[i] = new Vector2(pathPoint.x + 0.5f, rowsCount - pathPoint.y - 0.5f) * fieldSize;
                 }
+                lineRenderer.positionCount = shortestPath.Length;
+                lineRenderer.SetPositions(shortestPath);
                 return;
             }
             for (int i = 0; i < addX.Length; i++)
@@ -191,7 +179,8 @@ public class Controller : MonoBehaviour
                 }
             }
         }
-        shortestPath = null;
+
+        lineRenderer.positionCount = 0;
     }
 
     private void SetCamera()

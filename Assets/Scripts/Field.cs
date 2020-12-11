@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Field : MonoBehaviour
+public class Field : MonoBehaviour, IPointerClickHandler
 {
     public delegate void FieldClicked(int x, int y);
     public event FieldClicked Notify;
@@ -53,7 +54,7 @@ public class Field : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void OnPointerClick()
+    public void OnPointerClick(PointerEventData eventData)
     {
         Notify?.Invoke(x, y);
     }
