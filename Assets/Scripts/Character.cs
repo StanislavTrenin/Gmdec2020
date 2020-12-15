@@ -59,7 +59,7 @@ public class Character : MonoBehaviour
     private Field _field;
     private SpriteRenderer _spriteRenderer;
 
-    void Awake()
+    private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }

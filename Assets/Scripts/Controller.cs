@@ -7,20 +7,20 @@ public class Controller : MonoBehaviour
 {
     [SerializeField] private GameObject characterInstance;
     [SerializeField] private GameObject fieldInstance;
-    [SerializeField] private Material lineMaterial;
+    [SerializeField] private CharacterAction characterAction;
+    [SerializeField] private PathGenerator pathGenerator;
 
     private Vector2 fieldSize;
     private Field[,] fields;
     private Queue<Character> playerCharactersQueue = new Queue<Character>();
     private Queue<Character> enemyCharactersQueue = new Queue<Character>();
-    private bool isPlayerStep;
     private Character activeCharacter;
-    private LineRenderer lineRenderer;
+    private bool isPlayerStep;
 
-    // Start is called before the first frame update
-    void Start()
+    private Field prevField;
+    
+    private void Start()
     {
-        lineRenderer = GetComponent<LineRenderer>();
         fieldSize = fieldInstance.transform.localScale;
         GenerateField();
         GenerateCharacters();
@@ -46,7 +46,7 @@ public class Controller : MonoBehaviour
                 field.type = fieldTypes[i, j];
                 field.x = i;
                 field.y = j;
-                field.Notify += GenerateShortestPath;
+                field.Notify += OnSelectField;
                 fields[i, j] = field;
             }
         }
@@ -66,16 +66,19 @@ public class Controller : MonoBehaviour
         int rowsCount = fields.GetUpperBound(0) + 1;
         int columnsCount = fields.GetUpperBound(1) + 1;
         int randX, randY;
+        
         do
         {
             randX = Random.Range(0, columnsCount);
             randY = Random.Range(0, rowsCount);
         } while (fields[randX, randY].type != FieldType.FLOR);
+        
         GameObject characterObject = Instantiate(characterInstance, fields[randX, randY].gameObject.transform);
         Character character = characterObject.GetComponent<Character>();
         character.field = fields[randX, randY];
         character.isPlayer = isPlayer;
         character.initiative = initiative;
+        
         if (isPlayer)
         {
             playerCharactersQueue.Enqueue(character);
@@ -88,7 +91,8 @@ public class Controller : MonoBehaviour
 
     public void EndOfTurn()
     {
-        lineRenderer.positionCount = 0;
+        pathGenerator.ResetLinePath();
+        
         if (isPlayerStep)
         {
             playerCharactersQueue.Enqueue(activeCharacter);
@@ -103,84 +107,20 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void GenerateShortestPath(int finishX, int finishY)
+    private void OnSelectField(int finishX, int finishY)
     {
-        Field startField = activeCharacter.field;
-        Field finishField = fields[finishX, finishY];
-        if (finishField.type != FieldType.FLOR)
+        if (prevField == fields[finishX, finishY])
         {
-            lineRenderer.positionCount = 0;
-            return;
+            characterAction.EnableMove(activeCharacter, pathGenerator.LinePositions, fieldSize);
+            pathGenerator.ResetLinePath();
+            prevField = null;
         }
-        Queue<Field> fieldsToCheck = new Queue<Field>();
-        Stack<Field> path = new Stack<Field>();
-        Dictionary<Field, int> visited = new Dictionary<Field, int>();
-        visited.Add(startField, 0);
-        fieldsToCheck.Enqueue(startField);
-        int[] addX = {-1, 0, 1, -1, 1, -1, 0, 1};
-        int[] addY = {-1, -1, -1, 0, 0, 1, 1, 1};
-        while (fieldsToCheck.Count > 0)
+        else
         {
-            Field f = fieldsToCheck.Dequeue();
-            int value = visited[f];
-            int x = f.x;
-            int y = f.y;
-            if (f == finishField)
-            {
-                path.Push(f);
-                while (value > 0)
-                {
-                    value--;
-                    for (int i = 0; i < addX.Length; i++)
-                    {
-                        try
-                        {
-                            Field nearField = fields[x + addX[i], y + addY[i]];
-                            if (visited.ContainsKey(nearField) && visited[nearField] == value)
-                            {
-                                f = nearField;
-                                path.Push(f);
-                                x = f.x;
-                                y = f.y;
-                                break;
-                            }
-                        }
-                        catch (IndexOutOfRangeException e)
-                        {
-                    
-                        }
-                    }
-                }
-                int rowsCount = fields.GetUpperBound(0) + 1;
-                Vector3[] shortestPath = new Vector3[path.Count];
-                for (int i = 0; i < shortestPath.Length; i++)
-                {
-                    Field pathPoint = path.Pop();
-                    shortestPath[i] = new Vector2(pathPoint.x + 0.5f, rowsCount - pathPoint.y - 0.5f) * fieldSize;
-                }
-                lineRenderer.positionCount = shortestPath.Length;
-                lineRenderer.SetPositions(shortestPath);
-                return;
-            }
-            for (int i = 0; i < addX.Length; i++)
-            {
-                try
-                {
-                    Field nearField = fields[x + addX[i], y + addY[i]];
-                    if (nearField.type == FieldType.FLOR && !visited.ContainsKey(nearField))
-                    {
-                        visited[nearField] = value + 1;
-                        fieldsToCheck.Enqueue(nearField);
-                    }
-                }
-                catch (IndexOutOfRangeException e)
-                {
-                    
-                }
-            }
+            pathGenerator.GenerateShortestPath(finishX, finishY, fieldSize, fields, activeCharacter);
         }
-
-        lineRenderer.positionCount = 0;
+        
+        prevField = fields[finishX, finishY];
     }
 
     private void SetCamera()
