@@ -7,7 +7,6 @@ public class Controller : MonoBehaviour
 {
     [SerializeField] private GameObject characterInstance;
     [SerializeField] private GameObject fieldInstance;
-    [SerializeField] private CharacterAction characterAction;
     [SerializeField] private PathGenerator pathGenerator;
 
     private Vector2 fieldSize;
@@ -111,8 +110,7 @@ public class Controller : MonoBehaviour
     {
         if (prevField == fields[finishX, finishY])
         {
-            characterAction.EnableMove(activeCharacter, pathGenerator.LinePositions, fieldSize);
-            pathGenerator.ResetLinePath();
+            activeCharacter.CharacterAction.EnableMove(activeCharacter, pathGenerator.LinePositions, fields);
             prevField = null;
         }
         else

@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3715083597503872723}
-  - component: {fileID: 3715083597503872720}
   - component: {fileID: 8637938064885159891}
+  - component: {fileID: 3715083597503872720}
+  - component: {fileID: 2353186334792942859}
   m_Layer: 0
   m_Name: Character01
   m_TagString: Untagged
@@ -32,41 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3715083597503872720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3715083597503872721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 630de89ba7df4724f9aa35e7620bd1f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
-  nickName: 
-  level: 0
-  experience: 0
-  actionPoints: 0
-  body: 0
-  sanity: 0
-  resolve: 0
-  painThreshold: 0
-  sagacity: 0
-  bravery: 0
-  combat: 0
-  ballistic: 0
-  reflexes: 0
-  premonition: 0
-  headArmor: 0
-  bodyArmor: 0
-  armsArmor: 0
-  legsArmor: 0
-  logic: 0
-  guts: 0
-  initiative: 1
-  isPlayer: 0
 --- !u!212 &8637938064885159891
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -118,3 +84,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3715083597503872720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3715083597503872721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630de89ba7df4724f9aa35e7620bd1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  nickName: 
+  level: 0
+  experience: 0
+  actionPoints: 0
+  body: 0
+  sanity: 0
+  resolve: 0
+  painThreshold: 0
+  sagacity: 0
+  bravery: 0
+  combat: 0
+  ballistic: 0
+  reflexes: 0
+  premonition: 0
+  headArmor: 0
+  bodyArmor: 0
+  armsArmor: 0
+  legsArmor: 0
+  logic: 0
+  guts: 0
+  initiative: 1
+  _isPlayer: 0
+--- !u!114 &2353186334792942859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3715083597503872721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeababf4316b5734ca8d2ac5a4710898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedCharacter: 5
+  countStepsCharacter: 3

@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
+[RequireComponent(typeof(CharacterAction))]
 public class Character : MonoBehaviour
 {
     [Header("General")]
@@ -35,6 +37,7 @@ public class Character : MonoBehaviour
     
     [Header("Other")]
     [SerializeField] public int initiative;
+    [NonSerialized] public CharacterAction CharacterAction;
 
     public bool isPlayer
     {
@@ -62,6 +65,7 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        CharacterAction = GetComponent<CharacterAction>();
     }
 
 }

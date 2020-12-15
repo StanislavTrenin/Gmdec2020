@@ -31,14 +31,6 @@ public class PathGenerator : MonoBehaviour
     
     public void GenerateShortestPath(int finishX, int finishY, Vector2 fieldSize, Field[,] fields, Character activeCharacter)
     {
-        for (int i = 0; i < fields.GetUpperBound(1) + 1; i++)
-        {
-            for (int j = 0; j < fields.GetUpperBound(0) + 1; j++)
-            {
-                Debug.Log(new Vector2(fields[i, j].x, fields[i, j].y));
-            }
-        }
-
         Field startField = activeCharacter.field;
         Field finishField = fields[finishX, finishY];
         
