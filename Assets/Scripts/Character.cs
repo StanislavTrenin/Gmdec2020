@@ -54,7 +54,10 @@ public class Character : MonoBehaviour
         get { return _field; }
         set
         {
-            value.character = null;
+            if (_field != null)
+            {
+                _field.character = null;
+            }
             _field = value;
             _field.character = this;
         }
