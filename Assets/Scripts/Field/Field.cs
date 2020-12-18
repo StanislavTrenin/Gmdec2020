@@ -4,9 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public class FieldData
+{
+    public Field[,] Fields;
+    public Field PrevField;
+    public List<Field> PathField;
+    public Vector2 FieldSize;
+    public Character ActiveCharacter;
+}
+
 public class Field : MonoBehaviour, IPointerClickHandler
 {
-    public delegate void FieldClicked(int x, int y);
+    public delegate void FieldClicked(int x, int y, PointerEventData.InputButton inputButton);
     public event FieldClicked Notify;
 
     public int x;
@@ -14,7 +23,7 @@ public class Field : MonoBehaviour, IPointerClickHandler
 
     public FieldType type
     {
-        get { return _character == null ? _type : FieldType.WALL; }
+        get { return _character == null ? _type : FieldType.OBSTACLE; }
         set
         {
             _type = value;
@@ -49,14 +58,13 @@ public class Field : MonoBehaviour, IPointerClickHandler
     private Character _character;
     private SpriteRenderer _spriteRenderer;
 
-    void Awake()
+    private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Notify?.Invoke(x, y);
+        Notify?.Invoke(x, y, eventData.button);
     }
-
 }

@@ -6,8 +6,7 @@ using UnityEngine;
 public class PathGenerator : MonoBehaviour
 {
     [SerializeField] private LineRenderer lineRenderer;
-
-    public int LinePositionCount => lineRenderer.positionCount;
+    private FieldVisibilityType fieldVisibilityType;
 
     public List<Vector2> LinePositions
     {
@@ -28,13 +27,13 @@ public class PathGenerator : MonoBehaviour
     {
         lineRenderer.positionCount = 0;
     }
-    
-    public void GenerateShortestPath(int finishX, int finishY, Vector2 fieldSize, Field[,] fields, Character activeCharacter)
+
+    public void GenerateShortestPath(int finishX, int finishY, FieldData fieldData)
     {
-        Field startField = activeCharacter.field;
-        Field finishField = fields[finishX, finishY];
-        
-        if (finishField.type != FieldType.FLOR)
+        Field startField = fieldData.ActiveCharacter.field;
+        Field finishField = fieldData.Fields[finishX, finishY];
+
+        if (finishField.type != FieldType.OBSTACLE)
         {
             lineRenderer.positionCount = 0;
             return;
@@ -64,7 +63,7 @@ public class PathGenerator : MonoBehaviour
                     {
                         try
                         {
-                            Field nearField = fields[x + addX[i], y + addY[i]];
+                            Field nearField = fieldData.Fields[x + addX[i], y + addY[i]];
                             if (visited.ContainsKey(nearField) && visited[nearField] == value)
                             {
                                 f = nearField;
@@ -80,13 +79,15 @@ public class PathGenerator : MonoBehaviour
                         }
                     }
                 }
-                int rowsCount = fields.GetUpperBound(0) + 1;
+                int rowsCount = fieldData.Fields.GetUpperBound(0) + 1;
                 Vector3[] shortestPath = new Vector3[path.Count];
                 for (int i = 0; i < shortestPath.Length; i++)
                 {
                     Field pathPoint = path.Pop();
-                    shortestPath[i] = new Vector2(pathPoint.x + 0.5f, rowsCount - pathPoint.y - 0.5f) * fieldSize;
+                    
+                    shortestPath[i] = new Vector2(pathPoint.x + 0.5f, rowsCount - pathPoint.y - 0.5f) * fieldData.FieldSize;
                 }
+                
                 lineRenderer.positionCount = shortestPath.Length;
                 lineRenderer.SetPositions(shortestPath);
 
@@ -96,7 +97,7 @@ public class PathGenerator : MonoBehaviour
             {
                 try
                 {
-                    Field nearField = fields[x + addX[i], y + addY[i]];
+                    Field nearField = fieldData.Fields[x + addX[i], y + addY[i]];
                     if (nearField.type == FieldType.FLOR && !visited.ContainsKey(nearField))
                     {
                         visited[nearField] = value + 1;
@@ -109,8 +110,14 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }
-        
+
         lineRenderer.positionCount = 0;
+    }
+
+    public FieldVisibilityType  GenerateStraightPath(int finishX, int finishY, FieldData fieldData)
+    {
+        //TODO надо здесь написать алгоритм который будет строить прямую линию и смотреть какие клетки под ней находятся
+        return fieldVisibilityType;
     }
     
 }

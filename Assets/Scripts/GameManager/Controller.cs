@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
 public class Controller : MonoBehaviour
@@ -9,23 +10,23 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject fieldInstance;
     [SerializeField] private PathGenerator pathGenerator;
 
-    private Vector2 fieldSize;
-    private Field[,] fields;
+    private FieldData fieldData;
     private Queue<Character> playerCharactersQueue = new Queue<Character>();
     private Queue<Character> enemyCharactersQueue = new Queue<Character>();
-    private Character activeCharacter;
     private bool isPlayerStep;
 
-    private Field prevField;
-    
     private void Start()
     {
-        fieldSize = fieldInstance.transform.localScale;
+        fieldData = new FieldData
+        {
+            FieldSize = fieldInstance.transform.localScale
+        };
+        
         GenerateField();
         GenerateCharacters();
         SetCamera();
         isPlayerStep = true;
-        activeCharacter = playerCharactersQueue.Dequeue();
+        fieldData.ActiveCharacter = playerCharactersQueue.Dequeue();
     }
 
     private void GenerateField()
@@ -33,20 +34,20 @@ public class Controller : MonoBehaviour
         FieldType[,] fieldTypes = MapDeserializer.Deserialize("demo_map.txt");
         int rowsCount = fieldTypes.GetUpperBound(0) + 1;
         int columnsCount = fieldTypes.GetUpperBound(1) + 1;
-        fields = new Field[columnsCount, rowsCount];
+        fieldData.Fields = new Field[columnsCount, rowsCount];
         
         for (int i = 0; i < columnsCount; i++)
         {
             for (int j = 0; j < rowsCount; j++)
             {
                 GameObject fieldObject = Instantiate(fieldInstance);
-                fieldObject.transform.position = new Vector2(i, rowsCount - j - 1) * fieldSize + fieldSize * 0.5f;
+                fieldObject.transform.position = new Vector2(i, rowsCount - j - 1) * fieldData.FieldSize + fieldData.FieldSize * 0.5f;
                 Field field = fieldObject.GetComponent<Field>();
                 field.type = fieldTypes[i, j];
                 field.x = i;
                 field.y = j;
-                field.Notify += OnSelectField;
-                fields[i, j] = field;
+                field.Notify += new FieldSelector(fieldData, pathGenerator).OnSelectField;
+                fieldData.Fields[i, j] = field;
             }
         }
     }
@@ -62,19 +63,19 @@ public class Controller : MonoBehaviour
 
     private void GenerateCharacter(bool isPlayer, int initiative)
     {
-        int rowsCount = fields.GetUpperBound(0) + 1;
-        int columnsCount = fields.GetUpperBound(1) + 1;
+        int rowsCount = fieldData.Fields.GetUpperBound(0) + 1;
+        int columnsCount = fieldData.Fields.GetUpperBound(1) + 1;
         int randX, randY;
         
         do
         {
             randX = Random.Range(0, columnsCount);
             randY = Random.Range(0, rowsCount);
-        } while (fields[randX, randY].type != FieldType.FLOR);
+        } while (fieldData.Fields[randX, randY].type != FieldType.FLOR);
         
-        GameObject characterObject = Instantiate(characterInstance, fields[randX, randY].gameObject.transform);
+        GameObject characterObject = Instantiate(characterInstance, fieldData.Fields[randX, randY].gameObject.transform);
         Character character = characterObject.GetComponent<Character>();
-        character.field = fields[randX, randY];
+        character.field = fieldData.Fields[randX, randY];
         character.isPlayer = isPlayer;
         character.initiative = initiative;
         
@@ -94,37 +95,22 @@ public class Controller : MonoBehaviour
         
         if (isPlayerStep)
         {
-            playerCharactersQueue.Enqueue(activeCharacter);
+            playerCharactersQueue.Enqueue(fieldData.ActiveCharacter);
             isPlayerStep = false;
-            activeCharacter = enemyCharactersQueue.Dequeue();
+            fieldData.ActiveCharacter = enemyCharactersQueue.Dequeue();
         }
         else
         {
-            enemyCharactersQueue.Enqueue(activeCharacter);
+            enemyCharactersQueue.Enqueue(fieldData.ActiveCharacter);
             isPlayerStep = true;
-            activeCharacter = playerCharactersQueue.Dequeue();
+            fieldData.ActiveCharacter = playerCharactersQueue.Dequeue();
         }
     }
-
-    private void OnSelectField(int finishX, int finishY)
-    {
-        if (prevField == fields[finishX, finishY])
-        {
-            activeCharacter.CharacterAction.EnableMove(activeCharacter, pathGenerator.LinePositions, fields);
-            prevField = null;
-        }
-        else
-        {
-            pathGenerator.GenerateShortestPath(finishX, finishY, fieldSize, fields, activeCharacter);
-        }
-        
-        prevField = fields[finishX, finishY];
-    }
-
+    
     private void SetCamera()
     {
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
-        cameraController.SetSize((fields.GetUpperBound(1) + 1) * fieldSize.x,
-            (fields.GetUpperBound(0) + 1) * fieldSize.y);
+        cameraController.SetSize((fieldData.Fields.GetUpperBound(1) + 1) * fieldData.FieldSize.x,
+            (fieldData.Fields.GetUpperBound(0) + 1) * fieldData.FieldSize.y);
     }
 }

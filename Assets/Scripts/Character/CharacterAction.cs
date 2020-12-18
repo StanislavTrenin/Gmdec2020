@@ -8,26 +8,25 @@ public class CharacterAction : MonoBehaviour
 {
     [SerializeField][Range(1, 10)] private int speedCharacter;
     [SerializeField] private int countStepsCharacter;
-
+    
+    private FieldData fieldData;
+    private Vector2 prevPosition;
+    private List<Vector2> characterPositions = new List<Vector2>();
+    
     private int currentStep;
     private bool isNextField;
-    private Vector2 fieldSize;
-    private Vector2 prevPosition;
-    private Character character;
-    private List<Vector2> characterPositions = new List<Vector2>();
-    private Field[,] fields;
     
     private void Update()
     {
         Moving();
     }
     
-    public void EnableMove(Character character, List<Vector2> characterPositions, Field[,] fields)
+    public void EnableMove(List<Vector2> characterPositions, FieldData fieldData)
     {
         currentStep = 0;
         isNextField = true;
-        this.fields = fields;
-        this.character = character;
+
+        this.fieldData = fieldData;
         
         try
         {
@@ -50,16 +49,16 @@ public class CharacterAction : MonoBehaviour
         
         if (isNextField)
         {
-            prevPosition = character.transform.position;
+            prevPosition = fieldData.ActiveCharacter.transform.position;
             isNextField = false;
         }
 
-        character.transform.position = Vector2.MoveTowards(
-            character.transform.position, characterPositions[0], Time.deltaTime * speedCharacter);
+        fieldData.ActiveCharacter.transform.position = Vector2.MoveTowards(
+            fieldData.ActiveCharacter.transform.position, characterPositions[0], Time.deltaTime * speedCharacter);
 
-        if (Vector2.Distance(character.transform.position, characterPositions[0]) < 0.1f)
+        if (Vector2.Distance(fieldData.ActiveCharacter.transform.position, characterPositions[0]) < 0.1f)
         {
-            character.transform.position = characterPositions[0];
+            fieldData.ActiveCharacter.transform.position = characterPositions[0];
             UpdateCharacterField(characterPositions[0], prevPosition);
             characterPositions.RemoveAt(0);
             isNextField = true;
@@ -70,6 +69,9 @@ public class CharacterAction : MonoBehaviour
     private void UpdateCharacterField(Vector2 actualPosition, Vector2 prevPosition)
     {
         var direction = (actualPosition - prevPosition) / 4;
-        character.field = fields[character.field.x + (int) direction.x, character.field.y - (int) direction.y];
+        fieldData.ActiveCharacter.field = fieldData.Fields[
+                fieldData.ActiveCharacter.field.x + (int) direction.x, 
+                fieldData.ActiveCharacter.field.y - (int) direction.y];
+        fieldData.ActiveCharacter.field.character = fieldData.ActiveCharacter;
     }
 }
