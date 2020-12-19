@@ -8,7 +8,7 @@ public class Controller : MonoBehaviour
 {
     [SerializeField] private GameObject characterInstance;
     [SerializeField] private GameObject fieldInstance;
-    [SerializeField] private PathGenerator pathGenerator;
+    [SerializeField] private PathGeneratorVisual pathGeneratorVisual;
 
     private FieldData fieldData;
     private Queue<Character> playerCharactersQueue = new Queue<Character>();
@@ -46,7 +46,7 @@ public class Controller : MonoBehaviour
                 field.type = fieldTypes[i, j];
                 field.x = i;
                 field.y = j;
-                field.Notify += new FieldSelector(fieldData, pathGenerator).OnSelectField;
+                field.Notify += new FieldSelector(fieldData, pathGeneratorVisual).OnSelectField;
                 fieldData.Fields[i, j] = field;
             }
         }
@@ -91,7 +91,7 @@ public class Controller : MonoBehaviour
 
     public void EndOfTurn()
     {
-        pathGenerator.ResetLinePath();
+        pathGeneratorVisual.ResetLinePath();
         
         if (isPlayerStep)
         {

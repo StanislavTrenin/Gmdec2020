@@ -31,7 +31,7 @@ public class Field : MonoBehaviour, IPointerClickHandler
             {
                 case FieldType.FLOR:
                 {
-                    _spriteRenderer.color = Color.green;
+                    _spriteRenderer.color = Color.gray;
                     break;
                 }
                 case FieldType.WALL:

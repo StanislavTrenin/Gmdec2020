@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,9 +20,9 @@ public class FieldSelectionVisual : MonoBehaviour
         FieldSelector.onSelectField -= VisualizeSelection;
     }
 
-    private void VisualizeSelection(Field field)
+    private void VisualizeSelection(string text)
     {
-        
+        textTypeSelection.text = text;
     }
 }
 
@@ -29,14 +30,13 @@ public class FieldSelectionVisual : MonoBehaviour
 public class FieldSelector
 {
     private FieldData fieldData;
-    private PathGenerator pathGenerator;
-
-    public static Action<Field> onSelectField;
+    private PathGeneratorVisual pathGeneratorVisual;
+    public static Action<string> onSelectField;
     
-    public FieldSelector(FieldData fieldData, PathGenerator pathGenerator)
+    public FieldSelector(FieldData fieldData, PathGeneratorVisual pathGeneratorVisual)
     {
         this.fieldData = fieldData;
-        this.pathGenerator = pathGenerator;
+        this.pathGeneratorVisual = pathGeneratorVisual;
     }
     
     public void OnSelectField(int finishX, int finishY, PointerEventData.InputButton inputButton)
@@ -59,18 +59,31 @@ public class FieldSelector
         if (fieldData.PrevField == fieldData.Fields[finishX, finishY])
         {
             fieldData.ActiveCharacter.CharacterAction.
-                EnableMove(pathGenerator.LinePositions, fieldData);
+                EnableMove(pathGeneratorVisual.LinePositions, fieldData);
             fieldData.PrevField = null;
         }
         else
         {
-            pathGenerator.GenerateShortestPath(finishX, finishY, fieldData);
+            pathGeneratorVisual.PathShortestGenerator.GeneratePath(finishX, finishY, fieldData);
         }
     }
     
     private void CheckTypeField(int finishX, int finishY)
     {
-        //pathGenerator.GenerateStraightPath(finishX, finishY, fieldData);
-        //onSelectField?.Invoke(fieldData.Fields[finishX, finishY]);
+        pathGeneratorVisual.PathStraightGenerator.GeneratePath(finishX, finishY, fieldData);
+
+        switch (pathGeneratorVisual.PathStraightGenerator.FieldVisibilityType)
+        {
+            case FieldVisibilityType.NoVisible:
+                onSelectField?.Invoke("Can't See");
+                break;
+            case FieldVisibilityType.PartiallyVisible:
+                onSelectField?.Invoke("See in cover");
+                break;
+            default:
+                onSelectField?.Invoke("See");
+                break;
+        }
+
     }
 }
