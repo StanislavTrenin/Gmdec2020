@@ -56,12 +56,12 @@ public class Controller : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            GenerateCharacter(true, i + 1);
-            GenerateCharacter(false, i + 1);
+            GenerateCharacter(true);
+            GenerateCharacter(false);
         }
     }
 
-    private void GenerateCharacter(bool isPlayer, int initiative)
+    private void GenerateCharacter(bool isPlayer)
     {
         int rowsCount = fieldData.Fields.GetUpperBound(0) + 1;
         int columnsCount = fieldData.Fields.GetUpperBound(1) + 1;
@@ -77,8 +77,7 @@ public class Controller : MonoBehaviour
         Character character = characterObject.GetComponent<Character>();
         character.field = fieldData.Fields[randX, randY];
         character.isPlayer = isPlayer;
-        character.initiative = initiative;
-        
+
         if (isPlayer)
         {
             playerCharactersQueue.Enqueue(character);
