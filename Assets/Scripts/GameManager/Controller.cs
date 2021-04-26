@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
@@ -11,9 +12,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private PathGeneratorVisual pathGeneratorVisual;
 
     private FieldData fieldData;
-    private Queue<Character> playerCharactersQueue = new Queue<Character>();
-    private Queue<Character> enemyCharactersQueue = new Queue<Character>();
-    private bool isPlayerStep;
+    private SortedDictionary<int, List<Character>> charactersQueue = new SortedDictionary<int, List<Character>>();
 
     private void Start()
     {
@@ -25,8 +24,24 @@ public class Controller : MonoBehaviour
         GenerateField();
         GenerateCharacters();
         SetCamera();
-        isPlayerStep = true;
-        fieldData.ActiveCharacter = playerCharactersQueue.Dequeue();
+        fieldData.ActiveCharacter = GetNextActiveCharacter();
+    }
+
+    private Character GetNextActiveCharacter()
+    {
+        List<Character> characters = charactersQueue.First().Value;
+        Character currentCharacter = characters[Random.Range(0, characters.Count)];
+        characters.Remove(currentCharacter);
+        return currentCharacter;
+    }
+
+    private void AddCharacterToQueue(Character character)
+    {
+        if (!charactersQueue.ContainsKey(character.stats.initiative))
+        {
+            charactersQueue[character.stats.initiative] = new List<Character>();
+        }
+        charactersQueue[character.stats.initiative].Add(character);
     }
 
     private void GenerateField()
@@ -78,32 +93,14 @@ public class Controller : MonoBehaviour
         character.field = fieldData.Fields[randX, randY];
         character.isPlayer = isPlayer;
 
-        if (isPlayer)
-        {
-            playerCharactersQueue.Enqueue(character);
-        }
-        else
-        {
-            enemyCharactersQueue.Enqueue(character);
-        }
+        AddCharacterToQueue(character);
     }
 
     public void EndOfTurn()
     {
         pathGeneratorVisual.ResetLinePath();
-        
-        if (isPlayerStep)
-        {
-            playerCharactersQueue.Enqueue(fieldData.ActiveCharacter);
-            isPlayerStep = false;
-            fieldData.ActiveCharacter = enemyCharactersQueue.Dequeue();
-        }
-        else
-        {
-            enemyCharactersQueue.Enqueue(fieldData.ActiveCharacter);
-            isPlayerStep = true;
-            fieldData.ActiveCharacter = playerCharactersQueue.Dequeue();
-        }
+        AddCharacterToQueue(fieldData.ActiveCharacter);
+        fieldData.ActiveCharacter = GetNextActiveCharacter();
     }
     
     private void SetCamera()

@@ -10,7 +10,7 @@ public class Character : MonoBehaviour
     
     [NonSerialized] public CharacterAction CharacterAction;
 
-    private CharacterStats stats;
+    [NonSerialized] public CharacterStats stats;
 
     public bool isPlayer
     {
@@ -40,13 +40,9 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
+        stats = new CharacterStats(clazz, level);
         _spriteRenderer = GetComponent<SpriteRenderer>();
         CharacterAction = GetComponent<CharacterAction>();
-    }
-
-    private void Start()
-    {
-        stats = new CharacterStats(clazz, level);
     }
 
 }
