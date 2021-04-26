@@ -19,6 +19,7 @@ public class CharacterStats
 
     public bool aimedShot = false;
     public int currentHealth;
+    public int addedCriticalDamage = 0;
 
     public CharacterStats(CharacterClass clazz, int level)
     {
@@ -32,11 +33,12 @@ public class CharacterStats
             for (int i = 0; i < agility; i++)
             {
                 if (Random.value * 100 < chance) continue;
-                character.Hit(aimedShot ? maxDamage : minDamage, maxDamage, criticalStrikeChance, punching);
+                character.Hit(aimedShot ? maxDamage : minDamage, maxDamage, criticalStrikeChance + addedCriticalDamage, punching);
                 if (character == null) break;
             }
 
             aimedShot = false;
+            addedCriticalDamage = 0;
         }, "Атака"));
         switch (clazz)
         {
@@ -198,6 +200,7 @@ public class CharacterStats
                     {
                         character.stats.currentHealth = Math.Min(character.stats.currentHealth + character.stats.health / 4, character.stats.health);
                     }, "Доза пенициллина"));
+                skills.Add(new Skill(3, SkillAim.ALLY, character => { character.stats.addedCriticalDamage = 50; }, "Наведение на цель"));
                 switch (level)
                 {
                     case 1:
