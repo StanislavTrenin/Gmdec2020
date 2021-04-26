@@ -112,4 +112,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedCharacter: 5
-  countStepsCharacter: 3
+  countStepsCharacter: 4
