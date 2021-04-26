@@ -39,21 +39,25 @@ public class Controller : MonoBehaviour
         List<Character> characters = charactersQueue.First().Value;
         Character currentCharacter = characters[Random.Range(0, characters.Count - 1)];
         characters.Remove(currentCharacter);
-        currentCharacter.UpdateSkillsSteps();
-        List<Skill> skills = currentCharacter.GetActiveSkills();
-        foreach (Skill skill in skills)
+        if (currentCharacter.stunnedSteps <= 0)
         {
-            GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
-            SkillButton skillButton = skillButtonGO.GetComponent<SkillButton>();
-            skillButton.skill = skill;
-            skillButton.controller = this;
-            skillButton.UpdateText();
+            currentCharacter.UpdateSkillsSteps();
+            List<Skill> skills = currentCharacter.GetActiveSkills();
+            foreach (Skill skill in skills)
+            {
+                GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
+                SkillButton skillButton = skillButtonGO.GetComponent<SkillButton>();
+                skillButton.skill = skill;
+                skillButton.controller = this;
+                skillButton.UpdateText();
+            }
         }
         return currentCharacter;
     }
 
     private void AddCharacterToQueue(Character character)
     {
+        character.stunnedSteps = Mathf.Max(character.stunnedSteps - 1, 0);
         if (!charactersQueue.ContainsKey(character.stats.initiative))
         {
             charactersQueue[character.stats.initiative] = new List<Character>();

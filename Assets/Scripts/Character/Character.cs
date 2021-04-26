@@ -17,10 +17,12 @@ public class Character : MonoBehaviour
     [Header("General")]
     public int level;
     public CharacterClass clazz;
-    
+
     [NonSerialized] public CharacterAction CharacterAction;
 
     [NonSerialized] public CharacterStats stats;
+
+    [NonSerialized] public int stunnedSteps = 0;
 
     public bool isPlayer
     {

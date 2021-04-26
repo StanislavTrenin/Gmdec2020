@@ -36,6 +36,7 @@ public class CharacterStats
         switch (clazz)
         {
             case CharacterClass.MELEE_FIGHTER:
+                skills.Add(new Skill(3, SkillAim.ENEMY, character => { character.stunnedSteps += 1; }, "Удар по кумполу"));
                 switch (level)
                 {
                     case 1:

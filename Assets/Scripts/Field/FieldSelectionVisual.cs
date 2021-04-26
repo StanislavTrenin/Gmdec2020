@@ -42,6 +42,7 @@ public class FieldSelector
     
     public void OnSelectField(int finishX, int finishY, PointerEventData.InputButton inputButton)
     {
+        if (fieldData.ActiveCharacter.stunnedSteps > 0) return;
         switch (inputButton)
         {
             case PointerEventData.InputButton.Left:
