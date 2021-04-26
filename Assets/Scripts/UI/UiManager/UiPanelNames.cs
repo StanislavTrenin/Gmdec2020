@@ -5,8 +5,7 @@ using UnityEngine;
 public enum UiPanelNames
 {
     MenuPanel,
-    WinPanel,
-    LosePanel,
     IntroducePanel,
-    GamePanel
+    GamePanel,
+    EndGamePanel
 }

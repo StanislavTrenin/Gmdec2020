@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class DataEndGamePanel : DataPanel
 {
-    public Text TxtOther;
+
 }
 
 public class EndGamePanel : Panel

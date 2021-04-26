@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class DataPanel
 {
-    public string NamePanel;
+    public UiPanelNames NamePanel;
     public GameObject PanelObject;
 }
 

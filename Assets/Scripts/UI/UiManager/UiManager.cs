@@ -33,8 +33,10 @@ public abstract class UiManager : MonoBehaviour
 
     public void ShowPanel(UiPanelNames uiPanelName)
     {
-        if(dataPanelDict.ContainsKey(uiPanelName))
+        if (dataPanelDict.ContainsKey(uiPanelName))
+        {
             dataPanelDict[uiPanelName].ShowPanel();
+        }
     }
 
     public void HidePanel(UiPanelNames uiPanelName)

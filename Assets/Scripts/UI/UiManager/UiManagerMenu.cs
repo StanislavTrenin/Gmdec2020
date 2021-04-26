@@ -5,12 +5,16 @@ using UnityEngine;
 public class UiManagerMenu : UiManager
 {
     [SerializeField] private DataMenuPanel dataMenuPanel;
+    [SerializeField] private DataIntroducePanel dataIntroducePanel;
     
     public Panel MenuPanel;
+    public Panel IntroducePanel;
 
     protected override void Start()
     {
         MenuPanel = new MenuPanel(dataMenuPanel);
+        IntroducePanel = new IntroducePanel(dataIntroducePanel);
+        
         InitPanelDictionary();
         base.Start();
     }
@@ -24,7 +28,8 @@ public class UiManagerMenu : UiManager
     {
         dataPanelDict = new Dictionary<UiPanelNames, Panel>
         {
-            {UiPanelNames.MenuPanel, MenuPanel}
+            {UiPanelNames.MenuPanel, MenuPanel},
+            {UiPanelNames.IntroducePanel, IntroducePanel},
         };
     }
 }
