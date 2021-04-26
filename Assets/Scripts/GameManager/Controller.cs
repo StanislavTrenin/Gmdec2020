@@ -13,7 +13,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject skillButtonInstance;
     [SerializeField] private Transform skillButtonsPanel;
 
-    private FieldData fieldData;
+    [NonSerialized] public FieldData fieldData;
     private SortedDictionary<int, List<Character>> charactersQueue = new SortedDictionary<int, List<Character>>();
 
     private void Start()
@@ -116,6 +116,7 @@ public class Controller : MonoBehaviour
         character.isPlayer = isPlayer;
         character.Destroyed += OnCharacterDestroyed;
         character.Attacked += OnCharacterHit;
+        character.controller = this;
 
         AddCharacterToQueue(character);
     }

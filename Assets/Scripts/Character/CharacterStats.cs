@@ -142,6 +142,7 @@ public class CharacterStats
                 }
                 break;
             case CharacterClass.TANK:
+                skills.Add(new Skill(2, SkillAim.SELF, character => { character.isMagnitAttack = true; }, "Как за каменной стеной"));
                 switch (level)
                 {
                     case 1:

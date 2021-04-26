@@ -7,6 +7,11 @@ using Random = UnityEngine.Random;
 public class Character : MonoBehaviour
 {
     private static List<Skill> SKILLS = new List<Skill>();
+
+    private static int[][] OFFSETS =
+    {
+        new[] {-1, -1}, new[] {-1, 1}, new[] {1, -1}, new[] {1, 1}
+    };
     
     public delegate void OnDestroy(Character character);
     public event OnDestroy Destroyed;
@@ -23,6 +28,8 @@ public class Character : MonoBehaviour
     [NonSerialized] public CharacterStats stats;
 
     [NonSerialized] public int stunnedSteps = 0;
+
+    [NonSerialized] public Controller controller;
 
     public bool isPlayer
     {
@@ -50,6 +57,8 @@ public class Character : MonoBehaviour
     private Field _field;
     private SpriteRenderer _spriteRenderer;
 
+    [NonSerialized] public bool isMagnitAttack = false;
+
     private void Awake()
     {
         stats = new CharacterStats(clazz, level);
@@ -59,6 +68,18 @@ public class Character : MonoBehaviour
 
     public void Hit(int minDamage, int maxDamage, int crit, int penetration)
     {
+        foreach (var offset in OFFSETS)
+        {
+            Field field = controller.fieldData.Fields[this.field.x + offset[0], this.field.y + offset[1]];
+            if (field.character == null) continue;
+            if (field.character.isPlayer != isPlayer) continue;
+            if (field.character.isMagnitAttack)
+            {
+                field.character.isMagnitAttack = false;
+                field.character.Hit(minDamage, maxDamage, crit, penetration);
+                return;
+            }
+        }
         Attacked?.Invoke();
         int damage = Random.Range(minDamage, maxDamage);
         if (Random.Range(0, 100) < crit)
