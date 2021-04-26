@@ -17,6 +17,8 @@ public class CharacterStats
     public int accuracy;
     public List<Skill> skills = new List<Skill>();
 
+    public bool aimedShot = false;
+
     public CharacterStats(CharacterClass clazz, int level)
     {
         if (level < 1 || level > 3)
@@ -29,9 +31,11 @@ public class CharacterStats
             for (int i = 0; i < agility; i++)
             {
                 if (Random.value * 100 < chance) continue;
-                character.Hit(minDamage, maxDamage, criticalStrikeChance, punching);
-                if (character == null) return;
+                character.Hit(aimedShot ? maxDamage : minDamage, maxDamage, criticalStrikeChance, punching);
+                if (character == null) break;
             }
+
+            aimedShot = false;
         }, "Атака"));
         switch (clazz)
         {
@@ -87,6 +91,7 @@ public class CharacterStats
                 }
                 break;
             case CharacterClass.RANGED_FIGHTER:
+                skills.Add(new Skill(2, SkillAim.SELF, character => { character.stats.aimedShot = true; }, "Прицельный выстрел"));
                 switch (level)
                 {
                     case 1:
