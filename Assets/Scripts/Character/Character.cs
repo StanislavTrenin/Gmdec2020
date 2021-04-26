@@ -93,14 +93,14 @@ public class Character : MonoBehaviour
 
         if (hit < 0)
         {
-            stats.health -= minDamage / 10;
+            stats.currentHealth -= minDamage / 10;
         }
         else
         {
-            stats.health -= damage;
+            stats.currentHealth -= damage;
         }
 
-        if (stats.health < 0)
+        if (stats.currentHealth < 0)
         {
             Kill();
         }

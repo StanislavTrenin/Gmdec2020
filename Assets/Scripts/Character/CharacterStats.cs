@@ -18,6 +18,7 @@ public class CharacterStats
     public List<Skill> skills = new List<Skill>();
 
     public bool aimedShot = false;
+    public int currentHealth;
 
     public CharacterStats(CharacterClass clazz, int level)
     {
@@ -193,6 +194,10 @@ public class CharacterStats
                 }
                 break;
             case CharacterClass.SUPPORT:
+                skills.Add(new Skill(2, SkillAim.ALLY, character =>
+                    {
+                        character.stats.currentHealth = Math.Min(character.stats.currentHealth + character.stats.health / 4, character.stats.health);
+                    }, "Доза пенициллина"));
                 switch (level)
                 {
                     case 1:
@@ -343,5 +348,7 @@ public class CharacterStats
                 }
                 break;
         }
+
+        currentHealth = health;
     }
 }
