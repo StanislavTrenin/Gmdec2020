@@ -11,6 +11,7 @@ public class FieldData
     public List<Field> PathField;
     public Vector2 FieldSize;
     public Character ActiveCharacter;
+    public Skill ActiveSkill;
 }
 
 public class Field : MonoBehaviour, IPointerClickHandler

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public class CharacterStats
 {
@@ -13,6 +15,7 @@ public class CharacterStats
     public int punching;
     public int agility;
     public int accuracy;
+    public List<Skill> skills = new List<Skill>();
 
     public CharacterStats(CharacterClass clazz, int level)
     {
@@ -20,6 +23,16 @@ public class CharacterStats
         {
             throw new Exception("Level can be only 1-3");
         }
+        skills.Add(new Skill(1, SkillAim.ENEMY, character =>
+        {
+            int chance = accuracy - evasion;
+            for (int i = 0; i < agility; i++)
+            {
+                if (Random.value * 100 < chance) continue;
+                character.Hit(minDamage, maxDamage, criticalStrikeChance, punching);
+                if (character == null) return;
+            }
+        }, "Атака"));
         switch (clazz)
         {
             case CharacterClass.MELEE_FIGHTER:

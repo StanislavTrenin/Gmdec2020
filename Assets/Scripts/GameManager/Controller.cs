@@ -10,6 +10,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject characterInstance;
     [SerializeField] private GameObject fieldInstance;
     [SerializeField] private PathGeneratorVisual pathGeneratorVisual;
+    [SerializeField] private GameObject skillButtonInstance;
+    [SerializeField] private Transform skillButtonsPanel;
 
     private FieldData fieldData;
     private SortedDictionary<int, List<Character>> charactersQueue = new SortedDictionary<int, List<Character>>();
@@ -29,9 +31,24 @@ public class Controller : MonoBehaviour
 
     private Character GetNextActiveCharacter()
     {
+        foreach(Transform child in skillButtonsPanel)
+        {
+            Destroy(child.gameObject);
+        }
+        fieldData.ActiveSkill = null;
         List<Character> characters = charactersQueue.First().Value;
-        Character currentCharacter = characters[Random.Range(0, characters.Count)];
+        Character currentCharacter = characters[Random.Range(0, characters.Count - 1)];
         characters.Remove(currentCharacter);
+        currentCharacter.UpdateSkillsSteps();
+        List<Skill> skills = currentCharacter.GetActiveSkills();
+        foreach (Skill skill in skills)
+        {
+            GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
+            SkillButton skillButton = skillButtonGO.GetComponent<SkillButton>();
+            skillButton.skill = skill;
+            skillButton.controller = this;
+            skillButton.UpdateText();
+        }
         return currentCharacter;
     }
 
@@ -61,7 +78,8 @@ public class Controller : MonoBehaviour
                 field.type = fieldTypes[i, j];
                 field.x = i;
                 field.y = j;
-                field.Notify += new FieldSelector(fieldData, pathGeneratorVisual).OnSelectField;
+                FieldSelector fieldSelector = new FieldSelector(fieldData, pathGeneratorVisual);
+                field.Notify += fieldSelector.OnSelectField;
                 fieldData.Fields[i, j] = field;
             }
         }
@@ -92,6 +110,8 @@ public class Controller : MonoBehaviour
         Character character = characterObject.GetComponent<Character>();
         character.field = fieldData.Fields[randX, randY];
         character.isPlayer = isPlayer;
+        character.Destroyed += OnCharacterDestroyed;
+        character.Attacked += OnCharacterHit;
 
         AddCharacterToQueue(character);
     }
@@ -108,5 +128,25 @@ public class Controller : MonoBehaviour
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         cameraController.SetSize((fieldData.Fields.GetUpperBound(1) + 1) * fieldData.FieldSize.x,
             (fieldData.Fields.GetUpperBound(0) + 1) * fieldData.FieldSize.y);
+    }
+
+    public void OnSkillButton(Skill skill)
+    {
+        fieldData.ActiveSkill = skill;
+    }
+
+    private void OnCharacterDestroyed(Character character)
+    {
+        charactersQueue[character.stats.initiative].Remove(character);
+        character.Destroyed -= OnCharacterDestroyed;
+        character.Attacked -= OnCharacterHit;
+    }
+
+    private void OnCharacterHit()
+    {
+        foreach(Transform child in skillButtonsPanel)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

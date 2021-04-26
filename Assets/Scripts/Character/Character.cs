@@ -1,9 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(CharacterAction))]
 public class Character : MonoBehaviour
 {
+    private static List<Skill> SKILLS = new List<Skill>();
+    
+    public delegate void OnDestroy(Character character);
+    public event OnDestroy Destroyed;
+
+    public delegate void OnHit();
+    public event OnHit Attacked;
+    
     [Header("General")]
     public int level;
     public CharacterClass clazz;
@@ -45,4 +55,60 @@ public class Character : MonoBehaviour
         CharacterAction = GetComponent<CharacterAction>();
     }
 
+    public void Hit(int minDamage, int maxDamage, int crit, int penetration)
+    {
+        Attacked?.Invoke();
+        int damage = Random.Range(minDamage, maxDamage);
+        if (Random.Range(0, 100) < crit)
+        {
+            damage += damage;
+        }
+
+        int currentArmor = stats.protection - penetration;
+
+        int hit = damage - currentArmor;
+
+        if (hit < 0)
+        {
+            stats.health -= minDamage / 10;
+        }
+        else
+        {
+            stats.health -= damage;
+        }
+
+        if (stats.health < 0)
+        {
+            Kill();
+        }
+    }
+
+    public void Kill()
+    {
+        _field.character = null;
+        Destroyed?.Invoke(this);
+        Destroy(gameObject);
+    }
+
+    public void UpdateSkillsSteps()
+    {
+        foreach (Skill skill in stats.skills)
+        {
+            skill.UpdateStep();
+        }
+    }
+
+    public List<Skill> GetActiveSkills()
+    {
+        SKILLS.Clear();
+        foreach (Skill skill in stats.skills)
+        {
+            if (skill.isReady())
+            {
+                SKILLS.Add(skill);
+            }
+        }
+
+        return SKILLS;
+    }
 }

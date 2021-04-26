@@ -32,6 +32,7 @@ public class FieldSelector
     private FieldData fieldData;
     private PathGeneratorVisual pathGeneratorVisual;
     public static Action<string> onSelectField;
+    public Controller controller;
     
     public FieldSelector(FieldData fieldData, PathGeneratorVisual pathGeneratorVisual)
     {
@@ -44,7 +45,14 @@ public class FieldSelector
         switch (inputButton)
         {
             case PointerEventData.InputButton.Left:
-                ActionOnField(finishX, finishY);
+                if (fieldData.ActiveSkill == null)
+                {
+                    MoveToField(finishX, finishY);
+                }
+                else
+                {
+                    ApplySkillToField(finishX, finishY);
+                }
                 break;
             case PointerEventData.InputButton.Right:
                 CheckTypeField(finishX, finishY);
@@ -54,7 +62,26 @@ public class FieldSelector
         fieldData.PrevField = fieldData.Fields[finishX, finishY];
     }
 
-    private void ActionOnField(int finishX, int finishY)
+    private void ApplySkillToField(int x, int y)
+    {
+        Skill skill = fieldData.ActiveSkill;
+        Field field = fieldData.Fields[x, y];
+        Field currentField = fieldData.ActiveCharacter.field;
+        fieldData.ActiveSkill = null;
+        if (field.character == null) return;
+
+        if (!skill.canApply(currentField.character, field.character)) return;
+
+        pathGeneratorVisual.PathStraightGenerator.GeneratePath(x, y, fieldData);
+        if (pathGeneratorVisual.PathStraightGenerator.FieldVisibilityType == FieldVisibilityType.NoVisible) return;
+
+        if (Math.Sqrt(Math.Pow(field.x - currentField.x, 2) + Math.Pow(field.y - currentField.y, 2)) >
+            fieldData.ActiveCharacter.stats.range) return;
+
+        skill.Apply(field.character);
+    }
+
+    private void MoveToField(int finishX, int finishY)
     {
         if (fieldData.PrevField == fieldData.Fields[finishX, finishY])
         {

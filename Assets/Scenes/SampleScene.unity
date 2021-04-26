@@ -252,6 +252,75 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &213611928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 213611929}
+  - component: {fileID: 213611931}
+  - component: {fileID: 213611930}
+  m_Layer: 5
+  m_Name: SkillsButtonsPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &213611929
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213611928}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 542826436}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -80, y: 246.5}
+  m_SizeDelta: {x: 160, y: 493}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &213611930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213611928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 7
+  m_StartCorner: 3
+  m_StartAxis: 1
+  m_CellSize: {x: 160, y: 30}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 1
+  m_ConstraintCount: 1
+--- !u!222 &213611931
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213611928}
+  m_CullTransparentMesh: 0
 --- !u!1 &299871008
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +480,7 @@ RectTransform:
   m_Children:
   - {fileID: 1049628244}
   - {fileID: 2138454077}
+  - {fileID: 213611929}
   m_Father: {fileID: 299871012}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -875,6 +945,8 @@ MonoBehaviour:
   characterInstance: {fileID: 3715083597503872721, guid: 3d8239a3f7fcaf743aea83d57f132ce9, type: 3}
   fieldInstance: {fileID: 4618794286585845510, guid: 5968bfb1cd022d143816d578d63bfdf7, type: 3}
   pathGeneratorVisual: {fileID: 1612494883}
+  skillButtonInstance: {fileID: 168740515304035108, guid: 746c9ad815735f248b489d89257fb574, type: 3}
+  skillButtonsPanel: {fileID: 213611929}
 --- !u!4 &1612494881
 Transform:
   m_ObjectHideFlags: 0
