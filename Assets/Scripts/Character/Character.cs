@@ -70,7 +70,16 @@ public class Character : MonoBehaviour
     {
         foreach (var offset in OFFSETS)
         {
-            Field field = controller.fieldData.Fields[this.field.x + offset[0], this.field.y + offset[1]];
+            Field field = null;
+            try
+            {
+                field = controller.fieldData.Fields[this.field.x + offset[0], this.field.y + offset[1]];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                continue;
+            }
+
             if (field.character == null) continue;
             if (field.character.isPlayer != isPlayer) continue;
             if (field.character.isMagnitAttack)
