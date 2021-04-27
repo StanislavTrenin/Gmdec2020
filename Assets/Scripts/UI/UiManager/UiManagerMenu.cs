@@ -7,8 +7,8 @@ public class UiManagerMenu : UiManager
     [SerializeField] private DataMenuPanel dataMenuPanel;
     [SerializeField] private DataIntroducePanel dataIntroducePanel;
     
-    public Panel MenuPanel;
-    public Panel IntroducePanel;
+    private Panel MenuPanel;
+    private Panel IntroducePanel;
 
     protected override void Start()
     {

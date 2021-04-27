@@ -5,20 +5,27 @@ using UnityEngine;
 
 public class UiManagerGame : UiManager
 {
-    [Header("Дополнительные данные для панелек")]
-    [SerializeField] private DataGamePanel dataGamePanel;
-    [SerializeField] private DataEndGamePanel dataEndGamePanel;
+    [Header("Дополнительные данные для панелек")] [SerializeField]
+    private DataGamePanel dataGamePanel;
 
-    public EndGamePanel EndGamePanel;
-    public Panel GamePanel;
-    
+    [SerializeField] private DataEndGamePanel dataEndGamePanel;
+    [SerializeField] private DataPausePanel dataPausePanel;
+    [SerializeField] private DataEndRoundPanel dataEndRoundPanel;
+
+    private Panel EndGamePanel;
+    private Panel GamePanel;
+    private Panel PausePanel;
+    private Panel EndRoundPanel;
+
     protected override void Start()
     {
         EndGamePanel = new EndGamePanel(dataEndGamePanel);
         GamePanel = new GamePanel(dataGamePanel);
+        PausePanel = new PausePanel(dataPausePanel);
+        EndRoundPanel = new EndRoundPanel(dataEndRoundPanel);
 
         InitPanelDictionary();
-        
+
         base.Start();
     }
 
@@ -27,20 +34,34 @@ public class UiManagerGame : UiManager
         base.OnDestroy();
     }
 
+    private void Update()
+    {
+        SetVisiblePausePanel();
+    }
+
     protected override void InitPanelDictionary()
     {
         dataPanelDict = new Dictionary<UiPanelNames, Panel>
         {
             {UiPanelNames.GamePanel, GamePanel},
-            {UiPanelNames.EndGamePanel, EndGamePanel}
+            {UiPanelNames.EndGamePanel, EndGamePanel},
+            {UiPanelNames.PausePanel, PausePanel},
+            {UiPanelNames.EndRoundPanel, EndRoundPanel}
         };
     }
 
-    private void Update()
+    private void SetVisiblePausePanel()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ShowPanel(UiPanelNames.EndGamePanel);
+            if (dataPausePanel.IsShown == false)
+            {
+                PausePanel.ShowPanel();
+            }
+            else
+            {
+                PausePanel.HidePanel();
+            }
         }
     }
 }

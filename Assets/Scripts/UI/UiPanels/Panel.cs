@@ -10,6 +10,7 @@ public class DataPanel
 {
     public UiPanelNames NamePanel;
     public GameObject PanelObject;
+    [NonSerialized] public bool IsShown;
 }
 
 public abstract class Panel
@@ -19,9 +20,18 @@ public abstract class Panel
     
     protected GameObject panelObject;
     protected DataPanel dataPanel;
-    
-    public virtual void ShowPanel() => panelObject.SetActive(true);
-    public virtual void HidePanel() => panelObject.SetActive(false);
+
+    public virtual void ShowPanel()
+    {
+        panelObject.SetActive(true);
+        dataPanel.IsShown = true;
+    }
+
+    public virtual void HidePanel()
+    {
+        panelObject.SetActive(false);
+        dataPanel.IsShown = false;
+    }
 
     protected Panel(DataPanel dataPanel)
     {

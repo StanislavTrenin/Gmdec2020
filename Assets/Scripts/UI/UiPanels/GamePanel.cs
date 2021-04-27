@@ -11,7 +11,7 @@ public class DataGamePanel : DataPanel
 
 public class GamePanel : Panel
 {
-    public GamePanel(DataGamePanel menuPanel) : base(menuPanel)
+    public GamePanel(DataGamePanel menuDataPanel) : base(menuDataPanel)
     {
     }
 }

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public enum UiPanelNames
 {
-    MenuPanel,
-    IntroducePanel,
     GamePanel,
-    EndGamePanel
+    EndGamePanel,
+    PausePanel,
+    EndRoundPanel,
+    MenuPanel,
+    IntroducePanel
 }

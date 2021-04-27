@@ -13,13 +13,20 @@ public class DataIntroducePanel : DataPanel
 
 public class IntroducePanel : Panel
 {
-    private DataIntroducePanel dataIntroducePanel;
+    private DataIntroducePanel dataIntroduceDataPanel;
 
-    public IntroducePanel(DataIntroducePanel dataIntroducePanel) : base(dataIntroducePanel)
+    public IntroducePanel(DataIntroducePanel dataIntroduceDataPanel) : base(dataIntroduceDataPanel)
     {
-        this.dataIntroducePanel = dataIntroducePanel;
-        if(TextDataKeeper.TextDataDict.ContainsKey("IntroduceText"))
-            this.dataIntroducePanel.TextIntroduce.text = TextDataKeeper.TextDataDict["IntroduceText"];
-        this.dataIntroducePanel.PlayButton.onClick.AddListener(() => SceneManager.LoadScene("Game"));
+        this.dataIntroduceDataPanel = dataIntroduceDataPanel;
+
+        try
+        {
+            this.dataIntroduceDataPanel.TextIntroduce.text = TextDataKeeper.TextDataDict["Introduce"];
+        }
+        catch (KeyNotFoundException)
+        {
+        }
+
+        this.dataIntroduceDataPanel.PlayButton.onClick.AddListener(() => SceneManager.LoadScene("Game"));
     }
 }

@@ -14,7 +14,6 @@ public class TextDataKeeper : MonoBehaviour
         
         foreach (var textData in textDataObject.TextDataList)
         {
-            Debug.Log(textData.KeyText);
             TextDataDict.Add(textData.KeyText, textData.Text);
         }
     }

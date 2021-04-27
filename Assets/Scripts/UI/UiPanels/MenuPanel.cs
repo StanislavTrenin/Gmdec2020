@@ -12,14 +12,14 @@ public class DataMenuPanel : DataPanel
 
 public class MenuPanel : Panel
 {
-    private DataMenuPanel dataMenuPanel;
+    private DataMenuPanel dataMenuDataPanel;
 
-    public MenuPanel(DataMenuPanel dataMenuPanel) : base(dataMenuPanel)
+    public MenuPanel(DataMenuPanel dataMenuDataPanel) : base(dataMenuDataPanel)
     {
-        this.dataMenuPanel = dataMenuPanel;
+        this.dataMenuDataPanel = dataMenuDataPanel;
         
-        this.dataMenuPanel.StartButton.onClick.AddListener(() => onSetShowPanel?.Invoke(UiPanelNames.IntroducePanel));
-        this.dataMenuPanel.ExitButton.onClick.AddListener(() => Application.Quit());
+        this.dataMenuDataPanel.StartButton.onClick.AddListener(() => onSetShowPanel?.Invoke(UiPanelNames.IntroducePanel));
+        this.dataMenuDataPanel.ExitButton.onClick.AddListener(Application.Quit);
     }
 }
 

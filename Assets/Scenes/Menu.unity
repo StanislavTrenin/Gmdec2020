@@ -167,12 +167,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataMenuPanel:
-    NamePanel: 0
+    NamePanel: 4
     PanelObject: {fileID: 602997054}
     StartButton: {fileID: 1580640519}
     ExitButton: {fileID: 793419244}
   dataIntroducePanel:
-    NamePanel: 1
+    NamePanel: 5
     PanelObject: {fileID: 1150865352}
     PlayButton: {fileID: 601180227}
     TextIntroduce: {fileID: 906676742}
@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1016,7 +1016,7 @@ GameObject:
   - component: {fileID: 1416865104}
   - component: {fileID: 1416865103}
   m_Layer: 5
-  m_Name: StartText
+  m_Name: PlayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1074,7 +1074,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041D\u0430\u0447\u0430\u0442\u044C"
+  m_Text: "\u0412\u043F\u0435\u0440\u0435\u0434"
 --- !u!222 &1416865104
 CanvasRenderer:
   m_ObjectHideFlags: 0

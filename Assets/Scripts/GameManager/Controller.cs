@@ -16,6 +16,14 @@ public class Controller : MonoBehaviour
     [NonSerialized] public FieldData fieldData;
     private SortedDictionary<int, List<Character>> charactersQueue = new SortedDictionary<int, List<Character>>();
 
+    public Dictionary<bool, int> CountCharacterDict = new Dictionary<bool, int>
+    {
+        {true, 0},
+        {false, 0}
+    };
+
+    public Action onOutPlayers;
+
     private void Start()
     {
         fieldData = new FieldData
@@ -117,7 +125,8 @@ public class Controller : MonoBehaviour
         character.Destroyed += OnCharacterDestroyed;
         character.Attacked += OnCharacterHit;
         character.controller = this;
-
+        CountCharacterDict[isPlayer]++;
+        
         AddCharacterToQueue(character);
     }
 
@@ -145,6 +154,12 @@ public class Controller : MonoBehaviour
         charactersQueue[character.stats.initiative].Remove(character);
         character.Destroyed -= OnCharacterDestroyed;
         character.Attacked -= OnCharacterHit;
+        CountCharacterDict[character.isPlayer]--;
+
+        if (CountCharacterDict[character.isPlayer] <= 1)
+        {
+            onOutPlayers?.Invoke();
+        }
     }
 
     private void OnCharacterHit()
