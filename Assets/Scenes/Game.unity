@@ -334,7 +334,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -653,7 +652,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -774,7 +772,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -900,7 +897,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
 --- !u!223 &299871011
 Canvas:
   m_ObjectHideFlags: 0
@@ -1323,7 +1319,6 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &705507995
@@ -1393,7 +1388,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -1789,7 +1783,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -1922,7 +1915,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2402,7 +2394,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b90f941ca184949b3dfcc47c2ae7c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterInstance: {fileID: 3715083597503872721, guid: 3d8239a3f7fcaf743aea83d57f132ce9, type: 3}
+  characterInstances:
+  - characterClass: 0
+    gameObject: {fileID: 3715083597503872721, guid: 3d8239a3f7fcaf743aea83d57f132ce9, type: 3}
+  - characterClass: 1
+    gameObject: {fileID: 3715083597503872721, guid: 45606a8db17eed74e9376b431fcb6101, type: 3}
+  - characterClass: 2
+    gameObject: {fileID: 3715083597503872721, guid: 7962753509370a845957bf84a9d3236a, type: 3}
+  - characterClass: 3
+    gameObject: {fileID: 3715083597503872721, guid: f76d754bf9fe4fc4083ff72b230bae72, type: 3}
+  - characterClass: 4
+    gameObject: {fileID: 3715083597503872721, guid: fefdb21d6f3b77b41af10cff224d9b0f, type: 3}
+  - characterClass: 5
+    gameObject: {fileID: 3715083597503872721, guid: 483225bfe23ba1849bda73d28396014f, type: 3}
   fieldInstance: {fileID: 4618794286585845510, guid: 5968bfb1cd022d143816d578d63bfdf7, type: 3}
   pathGeneratorVisual: {fileID: 1612494883}
   skillButtonInstance: {fileID: 168740515304035108, guid: 746c9ad815735f248b489d89257fb574, type: 3}
@@ -2887,7 +2891,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}

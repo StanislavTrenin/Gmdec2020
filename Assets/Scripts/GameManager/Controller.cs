@@ -7,7 +7,15 @@ using Random = UnityEngine.Random;
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField] private GameObject characterInstance;
+    [Serializable]
+    struct CharacterInstancePair
+    {
+        public CharacterClass characterClass;
+        public GameObject gameObject;
+    }
+    
+    [SerializeField] private List<CharacterInstancePair> characterInstances;
+    private Dictionary<CharacterClass, GameObject> characterInstancesDict = new Dictionary<CharacterClass, GameObject>();
     [SerializeField] private GameObject fieldInstance;
     [SerializeField] private PathGeneratorVisual pathGeneratorVisual;
     [SerializeField] private GameObject skillButtonInstance;
@@ -22,10 +30,18 @@ public class Controller : MonoBehaviour
         {false, 0}
     };
 
-    public Action onOutPlayers;
+    public Action onLose;
+    public Action onWin;
+
+    private LevelInfo currentLevelInfo;
 
     private void Start()
     {
+        foreach (CharacterInstancePair characterInstancePair in characterInstances)
+        {
+            characterInstancesDict[characterInstancePair.characterClass] = characterInstancePair.gameObject;
+        }
+        currentLevelInfo = GameManager.GetCurrentLevelInfo();
         fieldData = new FieldData
         {
             FieldSize = fieldInstance.transform.localScale
@@ -75,7 +91,7 @@ public class Controller : MonoBehaviour
 
     private void GenerateField()
     {
-        FieldType[,] fieldTypes = MapDeserializer.Deserialize("demo_map.txt");
+        FieldType[,] fieldTypes = MapDeserializer.Deserialize(currentLevelInfo.mapName);
         int rowsCount = fieldTypes.GetUpperBound(0) + 1;
         int columnsCount = fieldTypes.GetUpperBound(1) + 1;
         fieldData.Fields = new Field[columnsCount, rowsCount];
@@ -99,33 +115,24 @@ public class Controller : MonoBehaviour
 
     private void GenerateCharacters()
     {
-        for (int i = 0; i < 10; i++)
+        foreach (SpawnPoint spawnPoint in currentLevelInfo.spawnPoints)
         {
-            GenerateCharacter(true);
-            GenerateCharacter(false);
+            GenerateCharacter(spawnPoint);
         }
     }
 
-    private void GenerateCharacter(bool isPlayer)
+    private void GenerateCharacter(SpawnPoint spawnPoint)
     {
-        int rowsCount = fieldData.Fields.GetUpperBound(0) + 1;
-        int columnsCount = fieldData.Fields.GetUpperBound(1) + 1;
-        int randX, randY;
-        
-        do
-        {
-            randX = Random.Range(0, columnsCount);
-            randY = Random.Range(0, rowsCount);
-        } while (fieldData.Fields[randX, randY].type != FieldType.FLOR);
-        
-        GameObject characterObject = Instantiate(characterInstance, fieldData.Fields[randX, randY].gameObject.transform);
+        GameObject characterObject = Instantiate(characterInstancesDict[spawnPoint.characterClass], fieldData.Fields[spawnPoint.x - 1, spawnPoint.y - 1].gameObject.transform);
         Character character = characterObject.GetComponent<Character>();
-        character.field = fieldData.Fields[randX, randY];
-        character.isPlayer = isPlayer;
+        character.level = spawnPoint.level;
+        character.field = fieldData.Fields[spawnPoint.x - 1, spawnPoint.y - 1];
+        character.isPlayer = spawnPoint.isPlayer;
         character.Destroyed += OnCharacterDestroyed;
         character.Attacked += OnCharacterHit;
         character.controller = this;
-        CountCharacterDict[isPlayer]++;
+        character.UpdateStats();
+        CountCharacterDict[spawnPoint.isPlayer]++;
         
         AddCharacterToQueue(character);
     }
@@ -158,7 +165,14 @@ public class Controller : MonoBehaviour
 
         if (CountCharacterDict[character.isPlayer] <= 1)
         {
-            onOutPlayers?.Invoke();
+            if (character.isPlayer)
+            {
+                onLose?.Invoke();
+            }
+            else
+            {
+                onWin?.Invoke();
+            }
         }
     }
 

@@ -61,9 +61,14 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        stats = new CharacterStats(clazz, level);
+        UpdateStats();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         CharacterAction = GetComponent<CharacterAction>();
+    }
+
+    public void UpdateStats()
+    {
+        stats = new CharacterStats(clazz, level);
     }
 
     public void Hit(int minDamage, int maxDamage, int crit, int penetration)
