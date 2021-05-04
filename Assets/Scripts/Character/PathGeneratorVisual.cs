@@ -24,7 +24,7 @@ public class PathGeneratorVisual : MonoBehaviour
         }
     }
     
-    private void Start()
+    private void Awake()
     {
         PathShortestGenerator = new PathShortestGenerator(lineRenderer);
         PathStraightGenerator = new PathStraightGenerator(lineRenderer);
