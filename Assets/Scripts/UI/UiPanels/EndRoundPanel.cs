@@ -14,17 +14,28 @@ public class DataEndRoundPanel : DataPanel
 
 public class EndRoundPanel : Panel
 {
+    private enum State
+    {
+        INIT,
+        NO,
+        YES,
+        YES_NO,
+        YES_YES
+    }
+    
     private DataEndRoundPanel dataEndRoundPanel;
+    private State state;
 
     public EndRoundPanel(DataEndRoundPanel dataEndRoundPanel) : base(dataEndRoundPanel)
     {
+        state = State.INIT;
         this.dataEndRoundPanel = dataEndRoundPanel;
-        this.dataEndRoundPanel.ButtonNo.onClick.AddListener(() => SceneManager.LoadScene("Game"));
-        this.dataEndRoundPanel.ButtonYes.onClick.AddListener(() => SceneManager.LoadScene("Game"));
+        this.dataEndRoundPanel.ButtonNo.onClick.AddListener(No);
+        this.dataEndRoundPanel.ButtonYes.onClick.AddListener(Yes);
 
         try
         {
-            this.dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["EndRound"];
+            this.dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1"];
         }
         catch (KeyNotFoundException)
         {
@@ -32,9 +43,73 @@ public class EndRoundPanel : Panel
 
     }
 
+    private void No()
+    {
+        switch (state)
+        {
+            case State.INIT:
+            {
+                state = State.NO;
+                dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1No"];
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                GameManager.currentBuff = GameManager.Buff.FAIL;
+                break;
+            }
+            case State.YES:
+            {
+                state = State.YES_NO;
+                dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1YesNo"];
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                GameManager.currentBuff = GameManager.Buff.WIN;
+                break;
+            }
+            case State.NO:
+            case State.YES_NO:
+            case State.YES_YES:
+            {
+                SceneManager.LoadScene("Game");
+                break;
+            }
+        }
+    }
+
+    private void Yes()
+    {
+        switch (state)
+        {
+            case State.INIT:
+            {
+                state = State.YES;
+                dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1Yes"];
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "1. Выстрелить в генератор";
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "2. Осмотреть помещение внимательнее";
+                break;
+            }
+            case State.YES:
+            {
+                state = State.YES_YES;
+                dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1YesYes"];
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                GameManager.currentBuff = GameManager.Buff.NO;
+                break;
+            }
+            case State.NO:
+            case State.YES_NO:
+            case State.YES_YES:
+            {
+                SceneManager.LoadScene("Game");
+                break;
+            }
+        }
+    }
+
     public override void ShowPanel()
     {
-        dataEndRoundPanel.ButtonNo.gameObject.SetActive(true);
+        dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "1. Двинуться по центральному коридору";
+        dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "2. Повернуть в боковой проход";
         dataEndRoundPanel.ButtonYes.gameObject.SetActive(true);
         base.ShowPanel();
     }

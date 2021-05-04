@@ -7,11 +7,19 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public enum Buff
+    {
+        NO,
+        FAIL,
+        WIN
+    }
+    
     [SerializeField] private Controller controller;
     [SerializeField] private UiManagerGame uiManagerGame;
 
     private static List<LevelInfo> levels = new List<LevelInfo>();
     private static int currentLevel = 0;
+    public static Buff currentBuff = Buff.NO;
 
     public static LevelInfo GetCurrentLevelInfo()
     {
@@ -188,7 +196,7 @@ public class GameManager : MonoBehaviour
 
     private void RestartRound()
     {
-        uiManagerGame.ShowPanel(UiPanelNames.EndRoundPanel);
+        uiManagerGame.ShowPanel(UiPanelNames.RestartPanel);
     }
 
     private void NextRound()
@@ -210,6 +218,7 @@ public class GameManager : MonoBehaviour
         if (next.name != "Game")
         {
             currentLevel = 0;
+            currentBuff = Buff.NO;
         }
     }
 }

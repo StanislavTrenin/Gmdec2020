@@ -2202,6 +2202,11 @@ MonoBehaviour:
     ButtonYes: {fileID: 766980669}
     ButtonNo: {fileID: 291602045}
     TextEndRound: {fileID: 1287181656}
+  dataRestartPanel:
+    NamePanel: 6
+    PanelObject: {fileID: 1634119210}
+    ButtonRestart: {fileID: 1179237376}
+    TextRestart: {fileID: 1287181656}
 --- !u!1 &1544133898
 GameObject:
   m_ObjectHideFlags: 0

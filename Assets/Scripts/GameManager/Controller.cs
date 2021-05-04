@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
@@ -50,6 +51,74 @@ public class Controller : MonoBehaviour
         GenerateField();
         GenerateCharacters();
         SetCamera();
+
+        if (GameManager.currentBuff != GameManager.Buff.NO)
+        {
+            List<Character> charactersToEffect = new List<Character>();
+            foreach (var characters in charactersQueue)
+            {
+                foreach (var character in characters.Value)
+                {
+                    switch (GameManager.currentBuff)
+                    {
+                        case GameManager.Buff.WIN:
+                        {
+                            if (!character.isPlayer) charactersToEffect.Add(character);
+                            break;
+                        }
+                        case GameManager.Buff.FAIL:
+                        {
+                            if (character.isPlayer) charactersToEffect.Add(character);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            switch (GameManager.currentBuff)
+            {
+                case GameManager.Buff.WIN:
+                {
+                    if (Random.value > 0.5)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            int index = Random.Range(0, charactersToEffect.Count);
+                            Character character = charactersToEffect[index];
+                            charactersToEffect.Remove(character);
+                            character.Kill();
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < charactersToEffect.Count / 2; i++)
+                        {
+                            int index = Random.Range(0, charactersToEffect.Count);
+                            while (charactersToEffect[index].stunnedSteps > 0)
+                            {
+                                index = Random.Range(0, charactersToEffect.Count);
+                            }
+
+                            charactersToEffect[index].stunnedSteps = 2;
+                        }
+                    }
+                    break;
+                }
+                case GameManager.Buff.FAIL:
+                {
+                    foreach (var character in charactersToEffect)
+                    {
+                        if (character.clazz == CharacterClass.TANK ||
+                             character.clazz == CharacterClass.MELEE_FIGHTER)
+                        {
+                            character.stats.currentHealth = Mathf.RoundToInt(character.stats.currentHealth * 0.8f);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
         fieldData.ActiveCharacter = GetNextActiveCharacter();
         if (!fieldData.ActiveCharacter.isPlayer)
         {
