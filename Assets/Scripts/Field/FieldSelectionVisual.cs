@@ -96,7 +96,7 @@ public class FieldSelector
         }
     }
     
-    private void CheckTypeField(int finishX, int finishY)
+    public void CheckTypeField(int finishX, int finishY)
     {
         pathGeneratorVisual.PathStraightGenerator.GeneratePath(finishX, finishY, fieldData);
 
@@ -112,6 +112,6 @@ public class FieldSelector
                 onSelectField?.Invoke("See");
                 break;
         }
-
+    
     }
 }

@@ -175,10 +175,10 @@ public class PathStraightGenerator : PathGenerator
         lineRenderer.positionCount = linePositions.Length;
         lineRenderer.SetPositions(linePositions);
         
-        CheckPath(finishX, finishY);
+        CheckPath(finishX, finishY, fieldData);
     }
 
-    private void CheckPath(int finishX, int finishY)
+    public void CheckPath(int finishX, int finishY, FieldData fieldData)
     {
         x0 = fieldData.ActiveCharacter.field.x;
         y0 = fieldData.ActiveCharacter.field.y;

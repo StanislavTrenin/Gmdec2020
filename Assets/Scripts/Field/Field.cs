@@ -64,6 +64,11 @@ public class Field : MonoBehaviour, IPointerClickHandler
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    public void OnAI()
+    {
+        Notify?.Invoke(x, y, PointerEventData.InputButton.Left);
+    }
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         Notify?.Invoke(x, y, eventData.button);

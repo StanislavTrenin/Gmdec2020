@@ -51,6 +51,10 @@ public class Controller : MonoBehaviour
         GenerateCharacters();
         SetCamera();
         fieldData.ActiveCharacter = GetNextActiveCharacter();
+        if (!fieldData.ActiveCharacter.isPlayer)
+        {
+            fieldData.ActiveCharacter.AI(EndOfTurn);
+        }
     }
 
     private Character GetNextActiveCharacter()
@@ -63,17 +67,19 @@ public class Controller : MonoBehaviour
         List<Character> characters = charactersQueue.First().Value;
         Character currentCharacter = characters[Random.Range(0, characters.Count - 1)];
         characters.Remove(currentCharacter);
-        if (currentCharacter.stunnedSteps <= 0)
-        {
-            currentCharacter.UpdateSkillsSteps();
-            List<Skill> skills = currentCharacter.GetActiveSkills();
-            foreach (Skill skill in skills)
+        if (currentCharacter.isPlayer) {
+            if (currentCharacter.stunnedSteps <= 0)
             {
-                GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
-                SkillButton skillButton = skillButtonGO.GetComponent<SkillButton>();
-                skillButton.skill = skill;
-                skillButton.controller = this;
-                skillButton.UpdateText();
+                currentCharacter.UpdateSkillsSteps();
+                List<Skill> skills = currentCharacter.GetActiveSkills();
+                foreach (Skill skill in skills)
+                {
+                    GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
+                    SkillButton skillButton = skillButtonGO.GetComponent<SkillButton>();
+                    skillButton.skill = skill;
+                    skillButton.controller = this;
+                    skillButton.UpdateText();
+                }
             }
         }
         return currentCharacter;
@@ -142,6 +148,10 @@ public class Controller : MonoBehaviour
         pathGeneratorVisual.ResetLinePath();
         AddCharacterToQueue(fieldData.ActiveCharacter);
         fieldData.ActiveCharacter = GetNextActiveCharacter();
+        if (!fieldData.ActiveCharacter.isPlayer)
+        {
+            fieldData.ActiveCharacter.AI(EndOfTurn);
+        }
     }
     
     private void SetCamera()
