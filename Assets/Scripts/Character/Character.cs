@@ -42,7 +42,6 @@ public class Character : MonoBehaviour
         set
         {
             _isPlayer = value;
-            _spriteRenderer.flipX = !_isPlayer;
         }
     }
     public bool _isPlayer;
@@ -60,14 +59,12 @@ public class Character : MonoBehaviour
         }
     }
     private Field _field;
-    private SpriteRenderer _spriteRenderer;
 
     [NonSerialized] public bool isMagnitAttack = false;
 
     private void Awake()
     {
         UpdateStats();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         CharacterAction = GetComponent<CharacterAction>();
     }
 
