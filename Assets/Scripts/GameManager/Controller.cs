@@ -22,6 +22,9 @@ public class Controller : MonoBehaviour
 
     [NonSerialized] public FieldData fieldData;
     private SortedDictionary<int, List<Character>> charactersQueue = new SortedDictionary<int, List<Character>>();
+    private SortedDictionary<int, List<Character>> charactersQueue2 = new SortedDictionary<int, List<Character>>();
+
+    private SortedDictionary<int, List<Character>> currentCharactersQueue;
 
     public Dictionary<bool, int> CountCharacterDict = new Dictionary<bool, int>
     {
@@ -50,6 +53,7 @@ public class Controller : MonoBehaviour
         GenerateCharacters();
         SetCamera();
 
+        currentCharactersQueue = charactersQueue;
         if (GameManager.currentBuff != GameManager.Buff.NO)
         {
             List<Character> charactersToEffect = new List<Character>();
@@ -131,9 +135,24 @@ public class Controller : MonoBehaviour
             Destroy(child.gameObject);
         }
         fieldData.ActiveSkill = null;
-        List<Character> characters = charactersQueue.First().Value;
+        if (currentCharactersQueue.Count == 0)
+        {
+            if (currentCharactersQueue == charactersQueue)
+            {
+                currentCharactersQueue = charactersQueue2;
+            }
+            else
+            {
+                currentCharactersQueue = charactersQueue;
+            }
+        }
+        List<Character> characters = currentCharactersQueue.First().Value;
         Character currentCharacter = characters[Random.Range(0, characters.Count - 1)];
         characters.Remove(currentCharacter);
+        if (characters.Count == 0)
+        {
+            currentCharactersQueue.Remove(currentCharactersQueue.First().Key);
+        }
         if (currentCharacter.isPlayer) {
             if (currentCharacter.stunnedSteps <= 0)
             {
@@ -154,12 +173,13 @@ public class Controller : MonoBehaviour
 
     private void AddCharacterToQueue(Character character)
     {
+        var nextQueue = currentCharactersQueue == charactersQueue ? charactersQueue2 : charactersQueue;
         character.stunnedSteps = Mathf.Max(character.stunnedSteps - 1, 0);
-        if (!charactersQueue.ContainsKey(character.stats.initiative))
+        if (!nextQueue.ContainsKey(character.stats.initiative))
         {
-            charactersQueue[character.stats.initiative] = new List<Character>();
+            nextQueue[character.stats.initiative] = new List<Character>();
         }
-        charactersQueue[character.stats.initiative].Add(character);
+        nextQueue[character.stats.initiative].Add(character);
     }
 
     private void GenerateField()
@@ -235,7 +255,15 @@ public class Controller : MonoBehaviour
 
     private void OnCharacterDestroyed(Character character)
     {
-        charactersQueue[character.stats.initiative].Remove(character);
+        if (charactersQueue.ContainsKey(character.stats.initiative) &&
+            charactersQueue[character.stats.initiative].Contains(character))
+        {
+            charactersQueue[character.stats.initiative].Remove(character);
+        }
+        else
+        {
+            charactersQueue2[character.stats.initiative].Remove(character);
+        }
         character.Destroyed -= OnCharacterDestroyed;
         character.Attacked -= OnCharacterHit;
         CountCharacterDict[character.isPlayer]--;
