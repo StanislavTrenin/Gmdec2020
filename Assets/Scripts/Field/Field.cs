@@ -60,6 +60,11 @@ public class Field : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void Start()
+    {
+        spriteRenderer.sortingOrder = -Mathf.RoundToInt(transform.position.y);
+    }
+
     public void OnAI()
     {
         Notify?.Invoke(x, y, PointerEventData.InputButton.Left);

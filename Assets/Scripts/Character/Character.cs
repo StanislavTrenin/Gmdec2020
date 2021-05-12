@@ -56,15 +56,18 @@ public class Character : MonoBehaviour
             }
             _field = value;
             _field.character = this;
+            spriteRenderer.sortingOrder = -Mathf.RoundToInt(_field.transform.position.y) + 1;
         }
     }
     private Field _field;
 
     [NonSerialized] public bool isMagnitAttack = false;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         UpdateStats();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         CharacterAction = GetComponent<CharacterAction>();
     }
 
