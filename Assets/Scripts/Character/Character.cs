@@ -45,6 +45,8 @@ public class Character : MonoBehaviour
         }
     }
     public bool _isPlayer;
+    public bool isAi;
+    
     public Field field
     {
         get { return _field; }
@@ -93,13 +95,14 @@ public class Character : MonoBehaviour
         }
     }
 
-    private Character GetNearWeakEnemy()
+    private Field GetNearWeakEnemy()
     {
         float minDist = Single.PositiveInfinity;
         Character nearEnemy = null;
         Field[,] fields = controller.fieldData.Fields;
         int rowsCount = fields.GetUpperBound(0) + 1;
         int columnsCount = fields.GetUpperBound(1) + 1;
+
         for (var i = 0; i < columnsCount; i++)
         {
             for (var j = 0; j < rowsCount; j++)
@@ -108,7 +111,10 @@ public class Character : MonoBehaviour
                 if (character == null) continue;
                 if (character.isPlayer == isPlayer) continue;
                 float dist = Vector3.Distance(fields[i, j].character.transform.position, transform.position);
-                if (dist < minDist || (dist == minDist && character.stats.currentHealth < nearEnemy.stats.currentHealth))
+                
+                if (dist < minDist ||
+                    (nearEnemy != null && dist == minDist &&
+                     character.stats.currentHealth < nearEnemy.stats.currentHealth))
                 {
                     nearEnemy = character;
                     minDist = dist;
@@ -116,7 +122,24 @@ public class Character : MonoBehaviour
             }
         }
 
-        return nearEnemy;
+        List<Field> nearestFields = new List<Field>();
+
+        if (nearEnemy != null)
+        {
+            if(nearEnemy.field.x - 1 >= 0 && fields[nearEnemy.field.x - 1, nearEnemy.field.y].type == FieldType.FLOR)
+                nearestFields.Add(fields[nearEnemy.field.x - 1, nearEnemy.field.y]);
+            
+            if(nearEnemy.field.x + 1 < fields.Length && fields[nearEnemy.field.x + 1, nearEnemy.field.y].type == FieldType.FLOR)
+                nearestFields.Add(fields[nearEnemy.field.x + 1, nearEnemy.field.y]);
+            
+            if(nearEnemy.field.y - 1 >= 0 && fields[nearEnemy.field.y, nearEnemy.field.y - 1].type == FieldType.FLOR)
+                nearestFields.Add(fields[nearEnemy.field.x, nearEnemy.field.y - 1]);
+            
+            if(nearEnemy.field.y + 1 < fields.Length && fields[nearEnemy.field.y, nearEnemy.field.y + 1].type == FieldType.FLOR)
+                nearestFields.Add(fields[nearEnemy.field.x, nearEnemy.field.y + 1]);
+        }
+
+        return nearestFields[0];
     }
 
     private void GetVisibleEnemies()
@@ -200,16 +223,16 @@ public class Character : MonoBehaviour
                     if (ENEMIES.Count == 0)
                     {
                         controller.fieldData.ActiveSkill = null;
-                        Character enemy = GetNearWeakEnemy();
-                        enemy._field.OnAI();
+                        Field fieldNearestEnemy = GetNearWeakEnemy();
+                        fieldNearestEnemy.OnAI();
                         GetNearestEnemies();
                     }
 
                     if (ENEMIES.Count > 0)
                     {
                         controller.fieldData.ActiveSkill = stats.skills[0];
-                        Character enemy = GetNearWeakEnemy();
-                        enemy._field.OnAI();
+                        Field fieldNearestEnemy = GetNearWeakEnemy();
+                        fieldNearestEnemy.OnAI();
                     }
                     break;
                 }

@@ -116,7 +116,7 @@ public class PathShortestGenerator: PathGenerator
                     
                     shortestPath[i] = new Vector2(pathPoint.x + 0.5f, rowsCount - pathPoint.y - 0.5f) * fieldData.FieldSize;
                 }
-                
+
                 lineRenderer.positionCount = shortestPath.Length;
                 lineRenderer.SetPositions(shortestPath);
                 return;

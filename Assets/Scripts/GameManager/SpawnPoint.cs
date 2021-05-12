@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnPoint
 {
     public bool isPlayer;
+    public bool isAi;
     public CharacterClass characterClass;
     public int x;
     public int y;

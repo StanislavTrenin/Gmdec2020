@@ -16,7 +16,7 @@ public class FieldData
 
 public class Field : MonoBehaviour, IPointerClickHandler
 {
-    public delegate void FieldClicked(int x, int y, PointerEventData.InputButton inputButton);
+    public delegate void FieldClicked(int x, int y, PointerEventData.InputButton inputButton, bool isAi);
     public event FieldClicked Notify;
 
     public int x;
@@ -66,11 +66,11 @@ public class Field : MonoBehaviour, IPointerClickHandler
 
     public void OnAI()
     {
-        Notify?.Invoke(x, y, PointerEventData.InputButton.Left);
+        Notify?.Invoke(x, y, PointerEventData.InputButton.Left , true);
     }
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        Notify?.Invoke(x, y, eventData.button);
+        Notify?.Invoke(x, y, eventData.button , false);
     }
 }

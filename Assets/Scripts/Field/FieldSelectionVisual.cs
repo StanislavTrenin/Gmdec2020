@@ -40,7 +40,7 @@ public class FieldSelector
         this.pathGeneratorVisual = pathGeneratorVisual;
     }
     
-    public void OnSelectField(int finishX, int finishY, PointerEventData.InputButton inputButton)
+    public void OnSelectField(int finishX, int finishY, PointerEventData.InputButton inputButton, bool isAi)
     {
         if (fieldData.ActiveCharacter.stunnedSteps > 0) return;
         switch (inputButton)
@@ -48,7 +48,7 @@ public class FieldSelector
             case PointerEventData.InputButton.Left:
                 if (fieldData.ActiveSkill == null)
                 {
-                    MoveToField(finishX, finishY);
+                    MoveToField(finishX, finishY, isAi);
                 }
                 else
                 {
@@ -82,7 +82,7 @@ public class FieldSelector
         skill.Apply(field.character);
     }
 
-    private void MoveToField(int finishX, int finishY)
+    private void MoveToField(int finishX, int finishY, bool isAi)
     {
         if (fieldData.PrevField == fieldData.Fields[finishX, finishY])
         {
@@ -93,6 +93,12 @@ public class FieldSelector
         else
         {
             pathGeneratorVisual.PathShortestGenerator.GeneratePath(finishX, finishY, fieldData);
+
+            if (isAi)
+            {
+                fieldData.PrevField = fieldData.Fields[finishX, finishY];
+                MoveToField(finishX, finishY, isAi);
+            }
         }
     }
     

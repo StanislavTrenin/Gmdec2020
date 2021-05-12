@@ -15,6 +15,8 @@ public class CharacterAction : MonoBehaviour
     
     private int currentStep;
     private bool isNextField;
+
+    private Character movableCharacter;
     
     private void Update()
     {
@@ -25,8 +27,9 @@ public class CharacterAction : MonoBehaviour
     {
         currentStep = 0;
         isNextField = true;
-
+        
         this.fieldData = fieldData;
+        movableCharacter = this.fieldData.ActiveCharacter;
         
         try
         {
@@ -45,20 +48,20 @@ public class CharacterAction : MonoBehaviour
 
     private void Moving()
     {
-        if(characterPositions.Count <= 0 || currentStep >= countStepsCharacter) return;
-        
+        if (characterPositions.Count <= 0 || currentStep >= countStepsCharacter) return;
+
         if (isNextField)
         {
-            prevPosition = fieldData.ActiveCharacter.transform.position;
+            prevPosition = movableCharacter.transform.position;
             isNextField = false;
         }
 
-        fieldData.ActiveCharacter.transform.position = Vector2.MoveTowards(
-            fieldData.ActiveCharacter.transform.position, characterPositions[0], Time.deltaTime * speedCharacter);
+        movableCharacter.transform.position = Vector2.MoveTowards(
+            movableCharacter.transform.position, characterPositions[0], Time.deltaTime * speedCharacter);
 
-        if (Vector2.Distance(fieldData.ActiveCharacter.transform.position, characterPositions[0]) < 0.1f)
+        if (Vector2.Distance(movableCharacter.transform.position, characterPositions[0]) < 0.1f)
         {
-            fieldData.ActiveCharacter.transform.position = characterPositions[0];
+            movableCharacter.transform.position = characterPositions[0];
             UpdateCharacterField(characterPositions[0], prevPosition);
             characterPositions.RemoveAt(0);
             isNextField = true;
@@ -69,9 +72,9 @@ public class CharacterAction : MonoBehaviour
     private void UpdateCharacterField(Vector2 actualPosition, Vector2 prevPosition)
     {
         var direction = (actualPosition - prevPosition) / 4;
-        fieldData.ActiveCharacter.field = fieldData.Fields[
-                fieldData.ActiveCharacter.field.x + (int) direction.x, 
-                fieldData.ActiveCharacter.field.y - (int) direction.y];
-        fieldData.ActiveCharacter.field.character = fieldData.ActiveCharacter;
+        movableCharacter.field = fieldData.Fields[
+            movableCharacter.field.x + (int) direction.x, 
+            movableCharacter.field.y - (int) direction.y];
+        movableCharacter.field.character = fieldData.ActiveCharacter;
     }
 }

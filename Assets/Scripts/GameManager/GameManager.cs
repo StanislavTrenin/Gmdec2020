@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
         levelInfo.spawnPoints.Add(new SpawnPoint
         {
             isPlayer = false,
+            isAi = true,
             x = 8,
             y = 8,
             characterClass = CharacterClass.OOZE_MELEE,
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
         levelInfo.spawnPoints.Add(new SpawnPoint
         {
             isPlayer = false,
+            isAi = true,
             x = 8,
             y = 12,
             characterClass = CharacterClass.OOZE_MELEE,
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
         levelInfo.spawnPoints.Add(new SpawnPoint
         {
             isPlayer = false,
+            isAi = true,
             x = 16,
             y = 5,
             characterClass = CharacterClass.OOZE_MELEE,
@@ -89,6 +92,7 @@ public class GameManager : MonoBehaviour
         levelInfo.spawnPoints.Add(new SpawnPoint
         {
             isPlayer = false,
+            isAi = true,
             x = 14,
             y = 14,
             characterClass = CharacterClass.OOZE_MELEE,

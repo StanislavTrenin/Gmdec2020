@@ -147,7 +147,7 @@ public class Controller : MonoBehaviour
             }
         }
         List<Character> characters = currentCharactersQueue.First().Value;
-        Character currentCharacter = characters[Random.Range(0, characters.Count - 1)];
+        Character currentCharacter = characters[Random.Range(0, characters.Count)];
         characters.Remove(currentCharacter);
         if (characters.Count == 0)
         {
@@ -221,6 +221,7 @@ public class Controller : MonoBehaviour
         character.level = spawnPoint.level;
         character.field = fieldData.Fields[spawnPoint.x - 1, spawnPoint.y - 1];
         character.isPlayer = spawnPoint.isPlayer;
+        character.isAi = spawnPoint.isAi;
         character.Destroyed += OnCharacterDestroyed;
         character.Attacked += OnCharacterHit;
         character.controller = this;
@@ -235,6 +236,7 @@ public class Controller : MonoBehaviour
         pathGeneratorVisual.ResetLinePath();
         AddCharacterToQueue(fieldData.ActiveCharacter);
         fieldData.ActiveCharacter = GetNextActiveCharacter();
+
         if (!fieldData.ActiveCharacter.isPlayer)
         {
             fieldData.ActiveCharacter.AI(EndOfTurn);
