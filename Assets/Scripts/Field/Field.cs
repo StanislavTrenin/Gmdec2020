@@ -16,11 +16,22 @@ public class FieldData
 
 public class Field : MonoBehaviour, IPointerClickHandler
 {
+    [Serializable]
+    struct SpritePair
+    {
+        public FieldType fieldType;
+        public Sprite sprite;
+    }
+
     public delegate void FieldClicked(int x, int y, PointerEventData.InputButton inputButton);
     public event FieldClicked Notify;
 
     public int x;
     public int y;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    [SerializeField] private List<SpritePair> _sprites; 
+    private Dictionary<FieldType, Sprite> sprites = new Dictionary<FieldType, Sprite>();
 
     public FieldType type
     {
@@ -28,24 +39,7 @@ public class Field : MonoBehaviour, IPointerClickHandler
         set
         {
             _type = value;
-            switch (_type)
-            {
-                case FieldType.FLOR:
-                {
-                    _spriteRenderer.color = Color.gray;
-                    break;
-                }
-                case FieldType.WALL:
-                {
-                    _spriteRenderer.color = Color.black;
-                    break;
-                }
-                case FieldType.OBSTACLE:
-                {
-                    _spriteRenderer.color = new Color(0.647f, 0.165f, 0.165f);
-                    break;
-                }
-            }
+            spriteRenderer.sprite = sprites[_type];
         }
     }
 
@@ -57,11 +51,13 @@ public class Field : MonoBehaviour, IPointerClickHandler
 
     private FieldType _type;
     private Character _character;
-    private SpriteRenderer _spriteRenderer;
 
-    private void Awake()
+    public void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        foreach (SpritePair spritePair in _sprites)
+        {
+            sprites[spritePair.fieldType] = spritePair.sprite;
+        }
     }
 
     public void OnAI()
