@@ -197,6 +197,7 @@ public class Controller : MonoBehaviour
                 fieldObject.transform.position = new Vector2(i, rowsCount - j - 1) * fieldData.FieldSize + fieldData.FieldSize * 0.5f;
                 Field field = fieldObject.GetComponent<Field>();
                 field.type = fieldTypes[i, j];
+                if(field.type == FieldType.FLOR) field.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0.8f, 0.5f, 0.5f, 1);
                 field.x = i;
                 field.y = j;
                 FieldSelector fieldSelector = new FieldSelector(fieldData, pathGeneratorVisual);
