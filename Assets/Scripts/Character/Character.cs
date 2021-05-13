@@ -77,7 +77,7 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        spriteRenderer.sortingOrder = -Mathf.RoundToInt(_field.transform.position.y) + 4;
+        spriteRenderer.sortingOrder = -Mathf.RoundToInt(transform.position.y) + 4;
     }
 
     public void UpdateStats()
@@ -290,7 +290,6 @@ public class Character : MonoBehaviour
 
     public void OnSkillApplied()
     {
-        Debug.Log("Applied");
         Attacked?.Invoke();
     }
 

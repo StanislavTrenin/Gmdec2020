@@ -288,7 +288,6 @@ public class Controller : MonoBehaviour
 
     private void OnCharacterHit()
     {
-        Debug.Log("Destroyed");
         foreach(Transform child in skillButtonsPanel)
         {
             Destroy(child.gameObject);
