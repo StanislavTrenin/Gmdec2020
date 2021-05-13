@@ -1,38 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
-public class FieldSelectionVisual : MonoBehaviour
-{
-    [SerializeField] private Text textTypeSelection;
-
-    private void Start()
-    {
-        FieldSelector.onSelectField += VisualizeSelection;
-    }
-
-    private void OnDestroy()
-    {
-        FieldSelector.onSelectField -= VisualizeSelection;
-    }
-
-    private void VisualizeSelection(string text)
-    {
-        textTypeSelection.text = text;
-    }
-}
-
 
 public class FieldSelector
 {
     private FieldData fieldData;
     private PathGeneratorVisual pathGeneratorVisual;
     public static Action<string> onSelectField;
-    public Controller controller;
     
     public FieldSelector(FieldData fieldData, PathGeneratorVisual pathGeneratorVisual)
     {
@@ -58,7 +32,9 @@ public class FieldSelector
                 }
                 break;
             case PointerEventData.InputButton.Right:
-                CheckTypeField(finishX, finishY);
+                // TODO: UI with stats
+                // Useful to debug
+                // CheckTypeField(finishX, finishY);
                 break;
         }
 

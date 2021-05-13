@@ -16,8 +16,9 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         camera = GetComponent<Camera>();
-        currentScale = 1;
         originalScale = camera.orthographicSize;
+        currentScale = minScale;
+        camera.orthographicSize = originalScale / currentScale;
     }
 
     void Update()

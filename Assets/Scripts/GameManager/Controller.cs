@@ -16,7 +16,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private List<CharacterInstancePair> characterInstances;
     private Dictionary<CharacterClass, GameObject> characterInstancesDict = new Dictionary<CharacterClass, GameObject>();
     [SerializeField] private GameObject fieldInstance;
-    [SerializeField] private PathGeneratorVisual pathGeneratorVisual;
+    [SerializeField] public PathGeneratorVisual pathGeneratorVisual;
     [SerializeField] private GameObject skillButtonInstance;
     [SerializeField] private Transform skillButtonsPanel;
 
@@ -146,12 +146,12 @@ public class Controller : MonoBehaviour
                 currentCharactersQueue = charactersQueue;
             }
         }
-        List<Character> characters = currentCharactersQueue.First().Value;
+        List<Character> characters = currentCharactersQueue.Last().Value;
         Character currentCharacter = characters[Random.Range(0, characters.Count)];
         characters.Remove(currentCharacter);
         if (characters.Count == 0)
         {
-            currentCharactersQueue.Remove(currentCharactersQueue.First().Key);
+            currentCharactersQueue.Remove(currentCharactersQueue.Last().Key);
         }
         if (currentCharacter.isPlayer) {
             if (currentCharacter.stunnedSteps <= 0)
@@ -168,6 +168,8 @@ public class Controller : MonoBehaviour
                 }
             }
         }
+
+        currentCharacter.currentStep = 0;
         return currentCharacter;
     }
 

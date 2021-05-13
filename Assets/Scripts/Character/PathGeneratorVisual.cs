@@ -72,8 +72,8 @@ public class PathShortestGenerator: PathGenerator
         Dictionary<Field, int> visited = new Dictionary<Field, int>();
         visited.Add(startField, 0);
         fieldsToCheck.Enqueue(startField);
-        int[] addX = {-1, 0, 1, -1, 1, -1, 0, 1};
-        int[] addY = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int[] addX = {-1, 0, 0, 1};
+        int[] addY = {0, -1, 1, 0};
         
         while (fieldsToCheck.Count > 0)
         {

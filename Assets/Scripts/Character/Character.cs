@@ -11,7 +11,7 @@ public class Character : MonoBehaviour
 
     private static int[][] OFFSETS =
     {
-        new[] {-1, -1}, new[] {-1, 1}, new[] {1, -1}, new[] {1, 1}, new [] {1, 0}, new [] {-1, 0}, new [] {0, 1}, new [] {0, -1}
+        new[] {-1, 0}, new[] {0, -1}, new[] {0, 1}, new[] {1, 0}
     };
 
     private static List<Character> ENEMIES = new List<Character>();
@@ -36,6 +36,8 @@ public class Character : MonoBehaviour
 
     [NonSerialized] public Controller controller;
 
+    [NonSerialized] public int currentStep = 0;
+
     public bool isPlayer
     {
         get { return _isPlayer; }
@@ -58,7 +60,6 @@ public class Character : MonoBehaviour
             }
             _field = value;
             _field.character = this;
-            spriteRenderer.sortingOrder = -Mathf.RoundToInt(_field.transform.position.y) + 1;
         }
     }
     private Field _field;
@@ -71,6 +72,11 @@ public class Character : MonoBehaviour
         UpdateStats();
         spriteRenderer = GetComponent<SpriteRenderer>();
         CharacterAction = GetComponent<CharacterAction>();
+    }
+
+    private void Update()
+    {
+        spriteRenderer.sortingOrder = -Mathf.RoundToInt(_field.transform.position.y) + 4;
     }
 
     public void UpdateStats()
@@ -113,7 +119,7 @@ public class Character : MonoBehaviour
                 Character character = fields[i, j].character;
                 if (character == null) continue;
                 if (character.isPlayer == isPlayer) continue;
-                float dist = Vector3.Distance(fields[i, j].character.transform.position, transform.position);
+                float dist = Math.Abs(field.x - i) + Math.Abs(field.y - j);
                 
                 if (dist < minDist ||
                     (nearEnemy != null && dist == minDist &&
@@ -202,7 +208,7 @@ public class Character : MonoBehaviour
             for (var j = 0; j < rowsCount; j++)
             {
                 bool visible = false;
-                float dist = Vector3.Distance(fields[i, j].transform.position, field.transform.position);
+                float dist = Math.Abs(field.x - i) + Math.Abs(field.y - j);
                 if (dist > minDist) continue;
                 for (var k = 0; k < ENEMIES.Count; k++)
                 {

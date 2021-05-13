@@ -13,7 +13,6 @@ public class CharacterAction : MonoBehaviour
     private Vector2 prevPosition;
     private List<Vector2> characterPositions = new List<Vector2>();
     
-    private int currentStep;
     private bool isNextField;
 
     private Character movableCharacter;
@@ -25,7 +24,8 @@ public class CharacterAction : MonoBehaviour
     
     public void EnableMove(List<Vector2> characterPositions, FieldData fieldData)
     {
-        currentStep = 0;
+        if (characterPositions.Count < 2) return;
+        characterPositions.RemoveAt(0);
         isNextField = true;
         
         this.fieldData = fieldData;
@@ -48,7 +48,15 @@ public class CharacterAction : MonoBehaviour
 
     private void Moving()
     {
-        if (characterPositions.Count <= 0 || currentStep >= countStepsCharacter) return;
+        if (characterPositions.Count <= 0 || movableCharacter.currentStep >= countStepsCharacter)
+        {
+            if (movableCharacter != null && movableCharacter._isPlayer) {
+                movableCharacter.controller.pathGeneratorVisual.ResetLinePath();
+            }
+            characterPositions.Clear();
+            movableCharacter = null;
+            return;
+        }
 
         if (isNextField)
         {
@@ -65,7 +73,7 @@ public class CharacterAction : MonoBehaviour
             UpdateCharacterField(characterPositions[0], prevPosition);
             characterPositions.RemoveAt(0);
             isNextField = true;
-            currentStep++;
+            movableCharacter.currentStep++;
         }
     }
 
