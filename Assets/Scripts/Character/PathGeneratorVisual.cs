@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -162,7 +161,6 @@ public class PathStraightGenerator : PathGenerator
     public override void GeneratePath(int finishX, int finishY, FieldData fieldData)
     {
         this.fieldData = fieldData;
-        FieldVisibilityType = FieldVisibilityType.Visible;
         
         var rowsCount = fieldData.Fields.GetUpperBound(0) + 1;
         var linePositions = new Vector3[]
@@ -175,15 +173,12 @@ public class PathStraightGenerator : PathGenerator
         lineRenderer.positionCount = linePositions.Length;
         lineRenderer.SetPositions(linePositions);
         
-        CheckPath(finishX, finishY, fieldData);
+        CheckPath(fieldData.ActiveCharacter.field.x, fieldData.ActiveCharacter.field.y, finishX, finishY, fieldData);
     }
 
-    public void CheckPath(int finishX, int finishY, FieldData fieldData)
+    public void CheckPath(int x0, int y0, int x1, int y1, FieldData fieldData)
     {
-        x0 = fieldData.ActiveCharacter.field.x;
-        y0 = fieldData.ActiveCharacter.field.y;
-        y1 = finishY;
-        x1 = finishX;
+        FieldVisibilityType = FieldVisibilityType.Visible;
         x = x0;
         y = y0;
         slope = 0;
@@ -219,6 +214,7 @@ public class PathStraightGenerator : PathGenerator
             else if (fieldData.Fields[x, y].type == FieldType.WALL)
             {
                 FieldVisibilityType = FieldVisibilityType.NoVisible;
+                return;
             }
         }
     }
