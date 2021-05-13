@@ -6,29 +6,27 @@ using UnityEngine;
 public class ClickHandler : MonoBehaviour
 {
     [SerializeField] private float timeHandle;
-    private double currentTimeHandle;
     private Action onLeftTimeHandler;
-    private bool enableHandling;
-    
+
     public void HandleButton(Action onLeftTimeHandler)
     {
         this.onLeftTimeHandler = onLeftTimeHandler;
-        currentTimeHandle = Time.time;
-        enableHandling = true;
+        StopAllCoroutines();
+        StartCoroutine(StartHandle());
+    }
+
+    private IEnumerator StartHandle()
+    {
+        yield return new WaitForSeconds(timeHandle);
+        if(Input.GetMouseButton(1))
+            onLeftTimeHandler?.Invoke();
     }
 
     private void FixedUpdate()
     {
-        if (Time.time - currentTimeHandle > timeHandle && enableHandling == true && Input.GetMouseButton(0))
+        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0))
         {
-            enableHandling = false;
-            onLeftTimeHandler?.Invoke();
-            onLeftTimeHandler = null;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            enableHandling = false;
-            onLeftTimeHandler = null;
+            StopAllCoroutines();
         }
     }
     
