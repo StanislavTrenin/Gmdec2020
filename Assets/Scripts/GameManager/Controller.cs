@@ -264,10 +264,23 @@ public class Controller : MonoBehaviour
             charactersQueue[character.stats.initiative].Contains(character))
         {
             charactersQueue[character.stats.initiative].Remove(character);
+            if (charactersQueue[character.stats.initiative].Count == 0)
+            {
+                charactersQueue.Remove(character.stats.initiative);
+            }
         }
         else
         {
             charactersQueue2[character.stats.initiative].Remove(character);
+            if (charactersQueue2[character.stats.initiative].Count == 0)
+            {
+                charactersQueue2.Remove(character.stats.initiative);
+            }
+        }
+
+        if (currentCharactersQueue.Count == 0)
+        {
+            currentCharactersQueue = currentCharactersQueue == charactersQueue ? charactersQueue2 : charactersQueue;
         }
         character.Destroyed -= OnCharacterDestroyed;
         character.Attacked -= OnCharacterHit;

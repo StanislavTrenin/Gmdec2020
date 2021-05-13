@@ -43,7 +43,7 @@ public class EndRoundPanel : Panel
 
     }
 
-    private void No()
+    private void Yes()
     {
         switch (state)
         {
@@ -75,7 +75,7 @@ public class EndRoundPanel : Panel
         }
     }
 
-    private void Yes()
+    private void No()
     {
         switch (state)
         {
@@ -83,8 +83,8 @@ public class EndRoundPanel : Panel
             {
                 state = State.YES;
                 dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1Yes"];
-                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "1. Выстрелить в генератор";
-                dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "2. Осмотреть помещение внимательнее";
+                dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "1. Выстрелить в генератор";
+                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "2. Осмотреть помещение внимательнее";
                 break;
             }
             case State.YES:
@@ -108,10 +108,10 @@ public class EndRoundPanel : Panel
 
     public override void ShowPanel()
     {
-        dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "1. Двинуться по центральному коридору";
-        dataEndRoundPanel.ButtonNo.gameObject.SetActive(true);
-        dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "2. Повернуть в боковой проход";
+        dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "1. Двинуться по центральному коридору";
         dataEndRoundPanel.ButtonYes.gameObject.SetActive(true);
+        dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "2. Повернуть в боковой проход";
+        dataEndRoundPanel.ButtonNo.gameObject.SetActive(true);
         dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1"];
         base.ShowPanel();
     }
