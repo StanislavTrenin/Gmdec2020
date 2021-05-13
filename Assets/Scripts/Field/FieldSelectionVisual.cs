@@ -54,8 +54,7 @@ public class FieldSelector
         pathGeneratorVisual.ResetLinePath();
         if (pathGeneratorVisual.PathStraightGenerator.FieldVisibilityType == FieldVisibilityType.NoVisible) return;
 
-        if (Math.Sqrt(Math.Pow(field.x - currentField.x, 2) + Math.Pow(field.y - currentField.y, 2)) >
-            fieldData.ActiveCharacter.stats.range) return;
+        if (Math.Abs(field.x - currentField.x) + Math.Abs(field.y - currentField.y) > fieldData.ActiveCharacter.stats.range) return;
 
         skill.Apply(field.character);
     }
