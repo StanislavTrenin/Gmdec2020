@@ -98,7 +98,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 1
   clazz: 2
+  damageText: {fileID: 4877558223059143097, guid: 215ea4a4d00fdfe4cb7469a7ad9279a0, type: 3}
   _isPlayer: 0
+  isAi: 0
 --- !u!114 &2353186334792942859
 MonoBehaviour:
   m_ObjectHideFlags: 0

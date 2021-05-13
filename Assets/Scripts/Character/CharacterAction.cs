@@ -83,6 +83,5 @@ public class CharacterAction : MonoBehaviour
         movableCharacter.field = fieldData.Fields[
             movableCharacter.field.x + (int) direction.x, 
             movableCharacter.field.y - (int) direction.y];
-        movableCharacter.field.character = fieldData.ActiveCharacter;
     }
 }

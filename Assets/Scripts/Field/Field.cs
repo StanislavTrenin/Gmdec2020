@@ -46,7 +46,11 @@ public class Field : MonoBehaviour, IPointerClickHandler
     public Character character
     {
         get { return _character; }
-        set { _character = value; }
+        set
+        {
+            _character = value; 
+            Debug.Log($"{x}, {y}, {(value != null ? value.clazz.ToString() : "")}");
+        }
     }
 
     private FieldType _type;
