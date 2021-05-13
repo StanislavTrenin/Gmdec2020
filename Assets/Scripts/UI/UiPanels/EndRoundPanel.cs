@@ -112,7 +112,8 @@ public class EndRoundPanel : Panel
         dataEndRoundPanel.ButtonYes.gameObject.SetActive(true);
         dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "2. Повернуть в боковой проход";
         dataEndRoundPanel.ButtonNo.gameObject.SetActive(true);
-        dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1"];
+        if(TextDataKeeper.TextDataDict.ContainsKey("Dialog1"))
+            dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict["Dialog1"];
         base.ShowPanel();
     }
 
