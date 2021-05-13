@@ -10,5 +10,6 @@ public enum UiPanelNames
     EndRoundPanel,
     MenuPanel,
     IntroducePanel,
-    RestartPanel
+    RestartPanel,
+    StatsPanel
 }

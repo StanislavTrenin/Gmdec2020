@@ -21,7 +21,6 @@ public class FieldSelector
         {
             case PointerEventData.InputButton.Left:
                 
-                Debug.Log(fieldData.ActiveSkill?.name);
                 if (fieldData.ActiveSkill == null)
                 {
                     MoveToField(finishX, finishY, isAi);

@@ -30,7 +30,10 @@ public class Field : MonoBehaviour, IPointerClickHandler
     public int y;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
-    [SerializeField] private List<SpritePair> _sprites; 
+    [SerializeField] private List<SpritePair> _sprites;
+    [SerializeField] private ClickHandler clickHandler;
+    [SerializeField] private UiManager uiManager;
+    
     private Dictionary<FieldType, Sprite> sprites = new Dictionary<FieldType, Sprite>();
 
     public FieldType type
@@ -75,6 +78,12 @@ public class Field : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
+        
         Notify?.Invoke(x, y, eventData.button, false);
+    }
+
+    private void OnHandleFieldWithCharacter()
+    {
+        uiManager.ShowPanel(UiPanelNames.StatsPanel);
     }
 }

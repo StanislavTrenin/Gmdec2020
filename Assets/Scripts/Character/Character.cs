@@ -331,6 +331,10 @@ public class Character : MonoBehaviour
         stats.currentHealth -= damage;
 
         HPText text = Instantiate(damageText).GetComponentInChildren<HPText>();
+        text.transform.position = new Vector3(
+                field.character.transform.position.x,
+                field.character.transform.position.y,
+                text.transform.position.z);
         text.text.text = $"-{damage}";
 
         if (stats.currentHealth < 0)

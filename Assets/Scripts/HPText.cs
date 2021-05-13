@@ -16,6 +16,7 @@ public class HPText : MonoBehaviour
     {
         while (true)
         {
+            gameObject.transform.Translate(0.01f, 0.01f, 0);
             Color color = text.color;
             color.a -= 1f / 255;
             if (color.a < 0)
