@@ -290,6 +290,7 @@ public class Character : MonoBehaviour
 
     public void OnSkillApplied()
     {
+        Debug.Log("Applied");
         Attacked?.Invoke();
     }
 
@@ -336,8 +337,8 @@ public class Character : MonoBehaviour
 
         HPText text = Instantiate(damageText).GetComponentInChildren<HPText>();
         text.transform.position = new Vector3(
-                field.character.transform.position.x,
-                field.character.transform.position.y,
+                transform.position.x,
+                transform.position.y,
                 text.transform.position.z);
         text.text.text = $"-{damage}";
 
