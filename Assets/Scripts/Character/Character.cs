@@ -38,6 +38,8 @@ public class Character : MonoBehaviour
 
     [NonSerialized] public int currentStep = 0;
 
+    [SerializeField] private GameObject damageText;
+
     public bool isPlayer
     {
         get { return _isPlayer; }
@@ -47,7 +49,6 @@ public class Character : MonoBehaviour
         }
     }
     public bool _isPlayer;
-    public bool isAi;
     
     public Field field
     {
@@ -324,12 +325,13 @@ public class Character : MonoBehaviour
 
         if (hit < 0)
         {
-            stats.currentHealth -= minDamage / 10;
+            damage = minDamage / 10;
         }
-        else
-        {
-            stats.currentHealth -= damage;
-        }
+
+        stats.currentHealth -= damage;
+
+        HPText text = Instantiate(damageText).GetComponentInChildren<HPText>();
+        text.text.text = $"-{damage}";
 
         if (stats.currentHealth < 0)
         {

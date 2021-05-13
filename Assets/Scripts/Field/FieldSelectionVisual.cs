@@ -52,6 +52,7 @@ public class FieldSelector
         if (!skill.canApply(currentField.character, field.character)) return;
 
         pathGeneratorVisual.PathStraightGenerator.GeneratePath(x, y, fieldData);
+        pathGeneratorVisual.ResetLinePath();
         if (pathGeneratorVisual.PathStraightGenerator.FieldVisibilityType == FieldVisibilityType.NoVisible) return;
 
         if (Math.Sqrt(Math.Pow(field.x - currentField.x, 2) + Math.Pow(field.y - currentField.y, 2)) >

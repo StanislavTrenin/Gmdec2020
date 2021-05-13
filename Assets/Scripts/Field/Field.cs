@@ -46,7 +46,10 @@ public class Field : MonoBehaviour, IPointerClickHandler
     public Character character
     {
         get { return _character; }
-        set { _character = value; }
+        set
+        {
+            _character = value; 
+        }
     }
 
     private FieldType _type;

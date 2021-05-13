@@ -224,7 +224,6 @@ public class Controller : MonoBehaviour
         character.level = spawnPoint.level;
         character.field = fieldData.Fields[spawnPoint.x - 1, spawnPoint.y - 1];
         character.isPlayer = spawnPoint.isPlayer;
-        character.isAi = spawnPoint.isAi;
         character.Destroyed += OnCharacterDestroyed;
         character.Attacked += OnCharacterHit;
         character.controller = this;
