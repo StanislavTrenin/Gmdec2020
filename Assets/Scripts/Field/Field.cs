@@ -49,7 +49,6 @@ public class Field : MonoBehaviour, IPointerClickHandler
         set
         {
             _character = value; 
-            Debug.Log($"{x}, {y}, {(value != null ? value.clazz.ToString() : "")}");
         }
     }
 
