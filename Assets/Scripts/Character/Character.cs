@@ -177,8 +177,9 @@ public class Character : MonoBehaviour
                 Character character = field.character;
                 if (character == null) continue;
                 if (character.isPlayer == isPlayer) continue;
-                _pathStraightGenerator.CheckPath(field.x, field.y, controller.fieldData);
-                if (_pathStraightGenerator.FieldVisibilityType == FieldVisibilityType.Visible)
+                if (Math.Abs(_field.x - field.x) + Math.Abs(_field.y - field.y) > stats.range) continue;
+                _pathStraightGenerator.CheckPath(_field.x, _field.y, field.x, field.y, controller.fieldData);
+                if (_pathStraightGenerator.FieldVisibilityType != FieldVisibilityType.NoVisible)
                 {
                     ENEMIES.Add(character);
                 }
@@ -208,14 +209,16 @@ public class Character : MonoBehaviour
         {
             for (var j = 0; j < rowsCount; j++)
             {
+                if (fields[i, j].type != FieldType.FLOR) continue;
                 bool visible = false;
                 float dist = Math.Abs(field.x - i) + Math.Abs(field.y - j);
                 if (dist > minDist) continue;
                 for (var k = 0; k < ENEMIES.Count; k++)
                 {
                     Field field = ENEMIES[k]._field;
-                    _pathStraightGenerator.CheckPath(field.x, field.y, controller.fieldData);
-                    if (_pathStraightGenerator.FieldVisibilityType == FieldVisibilityType.Visible)
+                    if (Math.Abs(i - field.x) + Math.Abs(j - field.y) > stats.range) continue;
+                    _pathStraightGenerator.CheckPath(i, j, field.x, field.y, controller.fieldData);
+                    if (_pathStraightGenerator.FieldVisibilityType != FieldVisibilityType.NoVisible)
                     {
                         visible = true;
                         break;

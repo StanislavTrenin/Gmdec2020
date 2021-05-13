@@ -242,6 +242,7 @@ public class Controller : MonoBehaviour
 
         if (!fieldData.ActiveCharacter.isPlayer)
         {
+            if (CountCharacterDict[true] == 0) return;
             fieldData.ActiveCharacter.AI(EndOfTurn);
         }
     }
