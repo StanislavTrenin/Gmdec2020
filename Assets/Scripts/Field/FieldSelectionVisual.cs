@@ -24,6 +24,7 @@ public class FieldSelector
                 if (fieldData.ActiveSkill == null)
                 {
                     MoveToField(finishX, finishY, isAi);
+                    fieldData.PrevField = fieldData.Fields[finishX, finishY];
                 }
                 else
                 {
@@ -36,8 +37,6 @@ public class FieldSelector
                 // CheckTypeField(finishX, finishY);
                 break;
         }
-
-        fieldData.PrevField = fieldData.Fields[finishX, finishY];
     }
 
     private void ApplySkillToField(int x, int y)

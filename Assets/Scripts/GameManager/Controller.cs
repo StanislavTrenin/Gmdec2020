@@ -238,6 +238,7 @@ public class Controller : MonoBehaviour
         pathGeneratorVisual.ResetLinePath();
         AddCharacterToQueue(fieldData.ActiveCharacter);
         fieldData.ActiveCharacter = GetNextActiveCharacter();
+        fieldData.PrevField = null;
 
         if (!fieldData.ActiveCharacter.isPlayer)
         {
@@ -272,7 +273,7 @@ public class Controller : MonoBehaviour
         character.Attacked -= OnCharacterHit;
         CountCharacterDict[character.isPlayer]--;
 
-        if (CountCharacterDict[character.isPlayer] <= 1)
+        if (CountCharacterDict[character.isPlayer] <= 0)
         {
             if (character.isPlayer)
             {

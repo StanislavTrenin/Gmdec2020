@@ -49,6 +49,7 @@ public class Skill
     {
         skill(character);
         stepsToReload = maxStepsToReload;
+        character.OnSkillApplied();
     }
 
     public void UpdateStep()

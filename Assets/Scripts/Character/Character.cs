@@ -288,6 +288,11 @@ public class Character : MonoBehaviour
         endTurn.Invoke();
     }
 
+    public void OnSkillApplied()
+    {
+        Attacked?.Invoke();
+    }
+
     public void Hit(int minDamage, int maxDamage, int crit, int penetration)
     {
         foreach (var offset in OFFSETS)
@@ -312,7 +317,6 @@ public class Character : MonoBehaviour
             }
         }
         
-        Attacked?.Invoke();
         int damage = Random.Range(minDamage, maxDamage);
         if (Random.Range(0, 100) < crit)
         {
