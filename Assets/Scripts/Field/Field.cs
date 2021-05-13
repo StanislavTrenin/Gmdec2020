@@ -31,7 +31,6 @@ public class Field : MonoBehaviour, IPointerClickHandler
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     [SerializeField] private List<SpritePair> _sprites;
-    [SerializeField] private ClickHandler clickHandler;
     [NonSerialized] private UiManagerGame uiManager;
     
     private Dictionary<FieldType, Sprite> sprites = new Dictionary<FieldType, Sprite>();
@@ -79,14 +78,12 @@ public class Field : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(character != null)
-            clickHandler.HandleButton(OnHandleFieldWithCharacter);
+        if (character != null && eventData.button == PointerEventData.InputButton.Right)
+        {
+            uiManager.dataStatsPanel.characterStats = character.stats;
+            uiManager.ShowPanel(UiPanelNames.StatsPanel);
+        }
         Notify?.Invoke(x, y, eventData.button, false);
     }
 
-    private void OnHandleFieldWithCharacter()
-    {
-        uiManager.dataStatsPanel.characterStats = character.stats;
-        uiManager.ShowPanel(UiPanelNames.StatsPanel);
-    }
 }
