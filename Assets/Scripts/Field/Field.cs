@@ -32,7 +32,7 @@ public class Field : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private List<SpritePair> _sprites;
     [SerializeField] private ClickHandler clickHandler;
-    [SerializeField] private UiManager uiManager;
+    [NonSerialized] private UiManagerGame uiManager;
     
     private Dictionary<FieldType, Sprite> sprites = new Dictionary<FieldType, Sprite>();
 
@@ -60,6 +60,7 @@ public class Field : MonoBehaviour, IPointerClickHandler
 
     public void Awake()
     {
+        uiManager = GameObject.FindWithTag("UiManager").GetComponent<UiManagerGame>();
         foreach (SpritePair spritePair in _sprites)
         {
             sprites[spritePair.fieldType] = spritePair.sprite;
@@ -78,12 +79,14 @@ public class Field : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        if(character != null)
+            clickHandler.HandleButton(OnHandleFieldWithCharacter);
         Notify?.Invoke(x, y, eventData.button, false);
     }
 
     private void OnHandleFieldWithCharacter()
     {
+        uiManager.dataStatsPanel.characterStats = character.stats;
         uiManager.ShowPanel(UiPanelNames.StatsPanel);
     }
 }

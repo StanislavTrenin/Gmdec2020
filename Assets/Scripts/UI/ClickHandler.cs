@@ -1,18 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ClickHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float timeHandle;
+    private double currentTimeHandle;
+    private Action onLeftTimeHandler;
+    private bool enableHandling;
+    
+    public void HandleButton(Action onLeftTimeHandler)
     {
-        
+        this.onLeftTimeHandler = onLeftTimeHandler;
+        currentTimeHandle = Time.time;
+        enableHandling = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        if (Time.time - currentTimeHandle > timeHandle && enableHandling == true && Input.GetMouseButton(0))
+        {
+            enableHandling = false;
+            onLeftTimeHandler?.Invoke();
+            onLeftTimeHandler = null;
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            enableHandling = false;
+            onLeftTimeHandler = null;
+        }
     }
+    
 }

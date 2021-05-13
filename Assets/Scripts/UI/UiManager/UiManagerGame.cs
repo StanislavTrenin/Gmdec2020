@@ -12,12 +12,14 @@ public class UiManagerGame : UiManager
     [SerializeField] private DataPausePanel dataPausePanel;
     [SerializeField] private DataEndRoundPanel dataEndRoundPanel;
     [SerializeField] private DataRestartPanel dataRestartPanel;
+    [SerializeField] public DataStatsPanel dataStatsPanel;
 
     private Panel EndGamePanel;
     private Panel GamePanel;
     private Panel PausePanel;
     private Panel EndRoundPanel;
     private Panel RestartPanel;
+    private Panel StatsPanel;
 
     protected override void Start()
     {
@@ -26,7 +28,7 @@ public class UiManagerGame : UiManager
         PausePanel = new PausePanel(dataPausePanel);
         EndRoundPanel = new EndRoundPanel(dataEndRoundPanel);
         RestartPanel = new RestartPanel(dataRestartPanel);
-
+        StatsPanel = new StatsPanel(dataStatsPanel);
         InitPanelDictionary();
 
         base.Start();
@@ -50,7 +52,8 @@ public class UiManagerGame : UiManager
             {UiPanelNames.EndGamePanel, EndGamePanel},
             {UiPanelNames.PausePanel, PausePanel},
             {UiPanelNames.EndRoundPanel, EndRoundPanel},
-            {UiPanelNames.RestartPanel, RestartPanel}
+            {UiPanelNames.RestartPanel, RestartPanel},
+            {UiPanelNames.StatsPanel, StatsPanel}
         };
     }
 

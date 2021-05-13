@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 8467012197731055294}
   - component: {fileID: -5898741925855404579}
   - component: {fileID: -4582853831876305018}
+  - component: {fileID: 1426089506208496130}
   m_Layer: 0
   m_Name: Field
   m_TagString: Untagged
@@ -137,6 +138,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 98bc20df074244544b995b28cf7d6a1f, type: 3}
   - fieldType: 2
     sprite: {fileID: 21300000, guid: 23d576029bf2ec248b0b818b31ee5dbc, type: 3}
+  clickHandler: {fileID: 1426089506208496130}
 --- !u!61 &-4582853831876305018
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -163,3 +165,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1426089506208496130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4618794286585845510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471a12836e823824fa64e037588bd65c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeHandle: 1.5

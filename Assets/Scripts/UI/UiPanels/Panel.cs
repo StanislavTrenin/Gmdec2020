@@ -19,23 +19,23 @@ public abstract class Panel
     public Action<UiPanelNames> onSetHidePanel;
     
     protected GameObject panelObject;
-    protected DataPanel dataPanel;
+    protected DataPanel panel;
 
     public virtual void ShowPanel()
     {
         panelObject.SetActive(true);
-        dataPanel.IsShown = true;
+        panel.IsShown = true;
     }
 
     public virtual void HidePanel()
     {
         panelObject.SetActive(false);
-        dataPanel.IsShown = false;
+        panel.IsShown = false;
     }
 
-    protected Panel(DataPanel dataPanel)
+    protected Panel(DataPanel panel)
     {
-        this.dataPanel = dataPanel;
-        this.panelObject = dataPanel.PanelObject;
+        this.panel = panel;
+        this.panelObject = panel.PanelObject;
     }
 }
