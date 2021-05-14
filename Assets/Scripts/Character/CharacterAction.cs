@@ -20,7 +20,8 @@ public class CharacterAction : MonoBehaviour
     private static int countBot;
     public static bool IsMoving;
     public static Action<bool> onMove;
-    
+    [NonSerialized] public AudioManager audioManager;
+
     private void Update()
     {
         Moving();
@@ -71,12 +72,13 @@ public class CharacterAction : MonoBehaviour
         if (staticMovableCharacter == null)
         {
             staticMovableCharacter = movableCharacter;
-            
             onMove?.Invoke(true);
             IsMoving = true;
         }
         else if(staticMovableCharacter != movableCharacter) return;
 
+        audioManager.PlayWalking();
+        
         if (isNextField)
         {
             prevPosition = movableCharacter.transform.position;
@@ -93,14 +95,15 @@ public class CharacterAction : MonoBehaviour
             characterPositions.RemoveAt(0);
             isNextField = true;
             movableCharacter.currentStep++;
-   
-            if (movableCharacter.currentStep >= countStepsCharacter)
+
+            if (movableCharacter.currentStep >= countStepsCharacter || characterPositions.Count <= 0)
             {
                 countBot--;
 
                 if (countBot <= 0)
                 {
                     countBot = 0;
+                    audioManager.StopWalking();
                     onMove?.Invoke(false);
                     IsMoving = false;
                 }

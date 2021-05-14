@@ -40,6 +40,8 @@ public class Character : MonoBehaviour
 
     [SerializeField] public GameObject damageText;
 
+    [NonSerialized] public AudioManager audioManager;
+
     public bool isPlayer
     {
         get { return _isPlayer; }
@@ -73,6 +75,11 @@ public class Character : MonoBehaviour
         UpdateStats();
         spriteRenderer = GetComponent<SpriteRenderer>();
         CharacterAction = GetComponent<CharacterAction>();
+    }
+
+    private void Start()
+    {
+        CharacterAction.audioManager = audioManager;
     }
 
     private void Update()

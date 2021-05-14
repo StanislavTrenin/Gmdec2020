@@ -38,6 +38,7 @@ public class Controller : MonoBehaviour
     public static bool IsPlayerTurn;
 
     private LevelInfo currentLevelInfo;
+    [SerializeField] private AudioManager audioManager;
 
     private void Start()
     {
@@ -229,6 +230,7 @@ public class Controller : MonoBehaviour
         character.Destroyed += OnCharacterDestroyed;
         character.Attacked += OnCharacterHit;
         character.controller = this;
+        character.audioManager = audioManager;
         character.UpdateStats();
         CountCharacterDict[spawnPoint.isPlayer]++;
         
