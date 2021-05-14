@@ -337,7 +337,7 @@ public class Character : MonoBehaviour
 
         stats.currentHealth -= damage;
 
-        if (stats.currentHealth < 0)
+        if (stats.currentHealth <= 0)
         {
             Kill();
         }
