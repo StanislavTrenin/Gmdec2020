@@ -7,7 +7,6 @@ using UnityEngine.UI;
 [Serializable]
 public class DataStatsPanel : DataPanel
 {
-    [NonSerialized] public CharacterStats characterStats;
     public Button exitButton;
     public Text HpText;
     public Text InitiativeText;
@@ -41,7 +40,7 @@ public class StatsPanel : Panel
 
     private void SetCharacterStats()
     {
-        characterStats = dataStatsPanel.characterStats;
+        characterStats = Field.StaticCharacterStats;
         dataStatsPanel.HpText.text = characterStats.currentHealth + " / " + characterStats.health;
         dataStatsPanel.InitiativeText.text = characterStats.initiative.ToString();
         dataStatsPanel.ProtectionText.text = characterStats.protection.ToString();

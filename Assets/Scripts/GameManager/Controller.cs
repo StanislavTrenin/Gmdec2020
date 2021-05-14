@@ -20,6 +20,7 @@ public class Controller : MonoBehaviour
     [SerializeField] public PathGeneratorVisual pathGeneratorVisual;
     [SerializeField] private GameObject skillButtonInstance;
     [SerializeField] private Transform skillButtonsPanel;
+    [SerializeField] private UiManager uiManager;
 
     [NonSerialized] public FieldData fieldData;
     private SortedDictionary<int, List<Character>> charactersQueue = new SortedDictionary<int, List<Character>>();
@@ -165,6 +166,7 @@ public class Controller : MonoBehaviour
                 {
                     GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
                     SkillButton skillButton = skillButtonGO.GetComponent<SkillButton>();
+                    skillButton.UiManager = uiManager;
                     skillButton.skill = skill;
                     skillButton.controller = this;
                     skillButton.UpdateText();

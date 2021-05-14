@@ -28,10 +28,12 @@ public class Field : MonoBehaviour, IPointerClickHandler
 
     public int x;
     public int y;
+    public static CharacterStats StaticCharacterStats;
+    
     [SerializeField] private SpriteRenderer spriteRenderer;
-
     [SerializeField] private List<SpritePair> _sprites;
-    [NonSerialized] private UiManagerGame uiManager;
+    
+    [NonSerialized] private UiManager uiManager;
     
     private Dictionary<FieldType, Sprite> sprites = new Dictionary<FieldType, Sprite>();
 
@@ -56,6 +58,7 @@ public class Field : MonoBehaviour, IPointerClickHandler
 
     private FieldType _type;
     private Character _character;
+    
 
     public void Awake()
     {
@@ -80,7 +83,7 @@ public class Field : MonoBehaviour, IPointerClickHandler
     {
         if (character != null && eventData.button == PointerEventData.InputButton.Right)
         {
-            uiManager.dataStatsPanel.characterStats = character.stats;
+            StaticCharacterStats = character.stats;
             uiManager.ShowPanel(UiPanelNames.StatsPanel);
         }
         Notify?.Invoke(x, y, eventData.button, false);

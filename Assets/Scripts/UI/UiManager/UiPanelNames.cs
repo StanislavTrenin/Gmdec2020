@@ -11,5 +11,6 @@ public enum UiPanelNames
     MenuPanel,
     IntroducePanel,
     RestartPanel,
-    StatsPanel
+    StatsPanel,
+    SkillPanel
 }
