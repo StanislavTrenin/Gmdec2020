@@ -16,6 +16,7 @@ public class CharacterAction : MonoBehaviour
     private bool isNextField;
 
     private Character movableCharacter;
+    [NonSerialized] public AudioManager audioManager;
     
     private void Update()
     {
@@ -50,6 +51,10 @@ public class CharacterAction : MonoBehaviour
     {
         if (characterPositions.Count <= 0 || movableCharacter.currentStep >= countStepsCharacter)
         {
+            if (characterPositions.Count > 0)
+            {
+                audioManager.StopWalking();
+            }
             if (movableCharacter != null && movableCharacter._isPlayer) {
                 movableCharacter.controller.pathGeneratorVisual.ResetLinePath();
             }
@@ -58,6 +63,7 @@ public class CharacterAction : MonoBehaviour
             return;
         }
 
+        audioManager.PlayWalking();
         if (isNextField)
         {
             prevPosition = movableCharacter.transform.position;
