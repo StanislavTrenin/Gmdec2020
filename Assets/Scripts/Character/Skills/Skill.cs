@@ -11,15 +11,17 @@ public class Skill
     private SkillAim skillAim;
     private ApplySkill skill;
     private string _name;
+    public string description;
 
     public string name => _name;
 
-    public Skill(int maxStepsToReload, SkillAim skillAim, ApplySkill skill, string name)
+    public Skill(int maxStepsToReload, SkillAim skillAim, ApplySkill skill, string name, string description)
     {
         this.maxStepsToReload = maxStepsToReload;
         this.skillAim = skillAim;
         this.skill = skill;
         _name = name;
+        this.description = description;
     }
     
     public bool isReady()

@@ -49,11 +49,12 @@ public class CharacterStats
 
             aimedShot = false;
             addedCriticalDamage = 0;
-        }, "Атака"));
+        }, "Атака", "Выбранная цель в пределах Range, видимая для бойца, становится целью атаки с параметрами Min Damage, Max Damage, Crit, Penetration."));
         switch (clazz)
         {
             case CharacterClass.MELEE_FIGHTER:
-                skills.Add(new Skill(3, SkillAim.ENEMY, character => { character.stunnedSteps += 1; }, "Удар по кумполу"));
+                skills.Add(new Skill(3, SkillAim.ENEMY, character => { character.stunnedSteps += 1; }, "Удар по кумполу",
+                    "Оглушает противника, к которому применена способность, заставляя того пропустить 1 ход. Время восстановления - 3 хода."));
                 switch (level)
                 {
                     case 1:
@@ -104,7 +105,8 @@ public class CharacterStats
                 }
                 break;
             case CharacterClass.RANGED_FIGHTER:
-                skills.Add(new Skill(2, SkillAim.SELF, character => { character.stats.aimedShot = true; }, "Прицельный выстрел"));
+                skills.Add(new Skill(2, SkillAim.SELF, character => { character.stats.aimedShot = true; }, "Прицельный выстрел",
+                    "Следующая атака персонажа наносит урон, равный показателю Максимального Урона. Время восстановления - 2 хода."));
                 switch (level)
                 {
                     case 1:
@@ -155,7 +157,8 @@ public class CharacterStats
                 }
                 break;
             case CharacterClass.TANK:
-                skills.Add(new Skill(2, SkillAim.SELF, character => { character.isMagnitAttack = true; }, "Как за каменной стеной"));
+                skills.Add(new Skill(2, SkillAim.SELF, character => { character.isMagnitAttack = true; }, "Как за каменной стеной",
+                    "Следующая атака, направленная на союзника, который стоит в соседней от героя клетке, перенаправляется в героя. Время восстановления - 2 хода."));
                 switch (level)
                 {
                     case 1:
@@ -209,8 +212,10 @@ public class CharacterStats
                 skills.Add(new Skill(2, SkillAim.ALLY, character =>
                     {
                         character.stats.currentHealth = Math.Min(character.stats.currentHealth + character.stats.health / 4, character.stats.health);
-                    }, "Доза пенициллина"));
-                skills.Add(new Skill(3, SkillAim.ALLY, character => { character.stats.addedCriticalDamage = 50; }, "Наведение на цель"));
+                    }, "Доза пенициллина",
+                    "Восстанавливает указанному союзнику 25% от его максимального показателя здоровья. Время восстановления - 2 хода."));
+                skills.Add(new Skill(3, SkillAim.ALLY, character => { character.stats.addedCriticalDamage = 50; }, "Наведение на цель",
+                    "Увеличивает показатель критического удара дружественной цели на 50% для ее следующей атаки. Время восстановления - 3 хода."));
                 switch (level)
                 {
                     case 1:
