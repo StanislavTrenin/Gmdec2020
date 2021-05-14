@@ -38,7 +38,7 @@ public class Character : MonoBehaviour
 
     [NonSerialized] public int currentStep = 0;
 
-    [SerializeField] private GameObject damageText;
+    [SerializeField] public GameObject damageText;
 
     public bool isPlayer
     {
@@ -296,7 +296,7 @@ public class Character : MonoBehaviour
         Attacked?.Invoke();
     }
 
-    public void Hit(int minDamage, int maxDamage, int crit, int penetration)
+    public int Hit(int minDamage, int maxDamage, int crit, int penetration, ref Character characterToDamage)
     {
         foreach (var offset in OFFSETS)
         {
@@ -314,12 +314,12 @@ public class Character : MonoBehaviour
             if (field.character.isPlayer != isPlayer) continue;
             if (field.character.isMagnitAttack)
             {
+                characterToDamage = field.character;
                 field.character.isMagnitAttack = false;
-                field.character.Hit(minDamage, maxDamage, crit, penetration);
-                return;
+                return field.character.Hit(minDamage, maxDamage, crit, penetration, ref characterToDamage);
             }
         }
-        
+
         int damage = Random.Range(minDamage, maxDamage);
         if (Random.Range(0, 100) < crit)
         {
@@ -337,17 +337,12 @@ public class Character : MonoBehaviour
 
         stats.currentHealth -= damage;
 
-        HPText text = Instantiate(damageText).GetComponentInChildren<HPText>();
-        text.transform.position = new Vector3(
-                transform.position.x,
-                transform.position.y,
-                text.transform.position.z);
-        text.text.text = $"-{damage}";
-
         if (stats.currentHealth < 0)
         {
             Kill();
         }
+
+        return damage;
     }
 
     public void Kill()
