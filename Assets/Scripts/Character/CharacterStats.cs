@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class CharacterStats
@@ -30,12 +31,21 @@ public class CharacterStats
         skills.Add(new Skill(1, SkillAim.ENEMY, character =>
         {
             int chance = accuracy - evasion;
+            int damage = 0;
+            Character characterToDamage = character;
             for (int i = 0; i < agility; i++)
             {
                 if (Random.value * 100 < chance) continue;
-                character.Hit(aimedShot ? maxDamage : minDamage, maxDamage, criticalStrikeChance + addedCriticalDamage, punching);
+                damage += characterToDamage.Hit(aimedShot ? maxDamage : minDamage, maxDamage, criticalStrikeChance + addedCriticalDamage, punching, ref characterToDamage);
                 if (character == null) break;
             }
+
+            HPText text = Character.Instantiate(characterToDamage.damageText).GetComponentInChildren<HPText>();
+            text.transform.position = new Vector3(
+                characterToDamage.transform.position.x,
+                characterToDamage.transform.position.y,
+                text.transform.position.z);
+            text.text.text = $"-{damage}";
 
             aimedShot = false;
             addedCriticalDamage = 0;
