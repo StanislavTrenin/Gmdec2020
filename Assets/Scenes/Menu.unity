@@ -176,6 +176,7 @@ MonoBehaviour:
     PanelObject: {fileID: 1150865352}
     PlayButton: {fileID: 601180227}
     TextIntroduce: {fileID: 906676742}
+    UiTextVisual: {fileID: 906676744}
 --- !u!1 &152965663
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +391,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &388063972
 Canvas:
   m_ObjectHideFlags: 0
@@ -486,6 +488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -643,6 +646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -753,6 +757,7 @@ GameObject:
   - component: {fileID: 906676741}
   - component: {fileID: 906676743}
   - component: {fileID: 906676742}
+  - component: {fileID: 906676744}
   m_Layer: 5
   m_Name: IntroduceText
   m_TagString: Untagged
@@ -806,7 +811,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 100
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -821,6 +826,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906676740}
   m_CullTransparentMesh: 1
+--- !u!114 &906676744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906676740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca26fdbeb072024a99294908ef2373b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSymbols: 200
+  delayChanging: 4
 --- !u!1 &984943693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1344,6 +1363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}

@@ -9,6 +9,7 @@ public class DataIntroducePanel : DataPanel
 {
     public Button PlayButton;
     public Text TextIntroduce;
+    public UiTextVisual UiTextVisual;
 }
 
 public class IntroducePanel : Panel
@@ -18,15 +19,18 @@ public class IntroducePanel : Panel
     public IntroducePanel(DataIntroducePanel dataIntroduceDataPanel) : base(dataIntroduceDataPanel)
     {
         this.dataIntroduceDataPanel = dataIntroduceDataPanel;
-
-        try
-        {
-            this.dataIntroduceDataPanel.TextIntroduce.text = TextDataKeeper.TextDataDict["Introduce"];
-        }
-        catch (KeyNotFoundException)
-        {
-        }
-
+        this.dataIntroduceDataPanel.PlayButton.interactable = false;
         this.dataIntroduceDataPanel.PlayButton.onClick.AddListener(() => SceneManager.LoadScene("Game"));
+    }
+
+    public override void ShowPanel()
+    {
+        base.ShowPanel();
+        dataIntroduceDataPanel.UiTextVisual.StartShowText(
+            TextDataKeeper.TextDataDict["Introduce"], 
+            dataIntroduceDataPanel.TextIntroduce, () =>
+            {
+                dataIntroduceDataPanel.PlayButton.interactable = true;
+            });
     }
 }
