@@ -40,7 +40,7 @@ public class EndRoundPanel : Panel
             {
                 state = State.NO;
                 dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1No"];
-                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                dataEndRoundPanel.ButtonNo.gameObject.SetActive(false);
                 dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "Go";
                 GameManager.currentBuff = GameManager.Buff.FAIL;
                 break;
@@ -49,7 +49,7 @@ public class EndRoundPanel : Panel
             {
                 state = State.YES_NO;
                 dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1YesNo"];
-                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                dataEndRoundPanel.ButtonNo.gameObject.SetActive(false);
                 dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "Go";
                 GameManager.currentBuff = GameManager.Buff.WIN;
                 break;
@@ -80,7 +80,7 @@ public class EndRoundPanel : Panel
             {
                 state = State.YES_YES;
                 dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1YesYes"];
-                dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "Go";
+                dataEndRoundPanel.ButtonNo.gameObject.SetActive(false);
                 dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "Go";
                 GameManager.currentBuff = GameManager.Buff.NO;
                 break;
