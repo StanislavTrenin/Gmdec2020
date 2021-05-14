@@ -106,6 +106,10 @@ public class CharacterAction : MonoBehaviour
                     audioManager.StopWalking();
                     onMove?.Invoke(false);
                     IsMoving = false;
+                    if (!movableCharacter._isPlayer)
+                    {
+                        movableCharacter.AIContinue();
+                    }
                 }
                 
                 staticMovableCharacter = null;

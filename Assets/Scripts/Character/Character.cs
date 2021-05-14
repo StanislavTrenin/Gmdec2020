@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -69,6 +70,7 @@ public class Character : MonoBehaviour
 
     [NonSerialized] public bool isMagnitAttack = false;
     private SpriteRenderer spriteRenderer;
+    public Action endTurn;
 
     private void Awake()
     {
@@ -244,6 +246,7 @@ public class Character : MonoBehaviour
 
     public void AI(Action endTurn)
     {
+        this.endTurn = endTurn;
         if (stunnedSteps <= 0)
         {
             switch (clazz)
@@ -256,7 +259,7 @@ public class Character : MonoBehaviour
                         controller.fieldData.ActiveSkill = null;
                         Field fieldNearestEnemy = GetNearWeakEnemy(false);
                         fieldNearestEnemy.OnAI();
-                        GetNearestEnemies();
+                        return;
                     }
 
                     if (ENEMIES.Count > 0)
@@ -274,7 +277,7 @@ public class Character : MonoBehaviour
                     {
                         controller.fieldData.ActiveSkill = null;
                         GetVisibleField().OnAI();
-                        GetVisibleEnemies();
+                        return;
                     }
 
                     if (ENEMIES.Count > 0)
@@ -295,6 +298,47 @@ public class Character : MonoBehaviour
             }
             }
         }
+        endTurn.Invoke();
+    }
+
+    public void AIContinue()
+    {
+        switch (clazz)
+        {
+            case CharacterClass.OOZE_MELEE:
+            { 
+                GetNearestEnemies();
+
+                if (ENEMIES.Count > 0)
+                {
+                    controller.fieldData.ActiveSkill = stats.skills[0];
+                    Field fieldNearestEnemy = GetNearWeakEnemy(true);
+                    fieldNearestEnemy.OnAI();
+                }
+                break;
+            }
+            case CharacterClass.OOZE_RANGED:
+            { 
+                GetVisibleEnemies();
+
+                if (ENEMIES.Count > 0)
+                {
+                    controller.fieldData.ActiveSkill = stats.skills[0];
+                    Character enemy = ENEMIES[0];
+                    for (int i = 1; i < ENEMIES.Count; i++)
+                    {
+                        Character character = ENEMIES[i];
+                        if (character.stats.currentHealth < enemy.stats.currentHealth)
+                        {
+                            enemy = character;
+                        }
+                    }
+                    enemy._field.OnAI();
+                }
+                break;
+            }
+        }
+
         endTurn.Invoke();
     }
 

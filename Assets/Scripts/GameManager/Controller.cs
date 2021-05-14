@@ -138,6 +138,7 @@ public class Controller : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        characterBlockActions.SkillButtonList.Clear();
         fieldData.ActiveSkill = null;
         if (currentCharactersQueue.Count == 0)
         {
@@ -163,7 +164,6 @@ public class Controller : MonoBehaviour
                 currentCharacter.UpdateSkillsSteps();
                 List<Skill> skills = currentCharacter.GetActiveSkills();
                 
-                characterBlockActions.SkillButtonList.Clear();
                 foreach (Skill skill in skills)
                 {
                     GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
