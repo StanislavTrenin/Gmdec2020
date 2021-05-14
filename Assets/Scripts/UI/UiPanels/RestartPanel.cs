@@ -18,20 +18,13 @@ public class RestartPanel : Panel
     public RestartPanel(DataRestartPanel dataRestartPanel) : base(dataRestartPanel)
     {
         this.dataRestartPanel = dataRestartPanel;
-        this.dataRestartPanel.ButtonRestart.onClick.AddListener(() => SceneManager.LoadScene("Game"));
-
-        try
-        {
-            this.dataRestartPanel.TextRestart.text = TextDataKeeper.TextDataDict?["Restart"];
-        }
-        catch (KeyNotFoundException)
-        {
-        }
-
     }
 
     public override void ShowPanel()
     {
+        dataRestartPanel.ButtonRestart.onClick.RemoveAllListeners();
+        dataRestartPanel.ButtonRestart.onClick.AddListener(() => SceneManager.LoadScene("Game"));
+        dataRestartPanel.TextRestart.text = TextDataKeeper.TextDataDict["Restart"];
         dataRestartPanel.ButtonRestart.gameObject.SetActive(true);
         dataRestartPanel.ButtonRestart.GetComponentInChildren<Text>().text = "Начать заново";
         base.ShowPanel();

@@ -30,17 +30,6 @@ public class EndRoundPanel : Panel
     {
         state = State.INIT;
         this.dataEndRoundPanel = dataEndRoundPanel;
-        this.dataEndRoundPanel.ButtonNo.onClick.AddListener(No);
-        this.dataEndRoundPanel.ButtonYes.onClick.AddListener(Yes);
-
-        try
-        {
-            this.dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1"];
-        }
-        catch (KeyNotFoundException)
-        {
-        }
-
     }
 
     private void Yes()
@@ -108,12 +97,15 @@ public class EndRoundPanel : Panel
 
     public override void ShowPanel()
     {
+        dataEndRoundPanel.ButtonNo.onClick.RemoveAllListeners();
+        dataEndRoundPanel.ButtonNo.onClick.AddListener(No);
+        dataEndRoundPanel.ButtonYes.onClick.RemoveAllListeners();
+        dataEndRoundPanel.ButtonYes.onClick.AddListener(Yes);
         dataEndRoundPanel.ButtonYes.GetComponentInChildren<Text>().text = "1. Двинуться по центральному коридору";
         dataEndRoundPanel.ButtonYes.gameObject.SetActive(true);
         dataEndRoundPanel.ButtonNo.GetComponentInChildren<Text>().text = "2. Повернуть в боковой проход";
         dataEndRoundPanel.ButtonNo.gameObject.SetActive(true);
-        if(TextDataKeeper.TextDataDict.ContainsKey("Dialog1"))
-            dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict["Dialog1"];
+        dataEndRoundPanel.TextEndRound.text = TextDataKeeper.TextDataDict?["Dialog1"];
         base.ShowPanel();
     }
 
