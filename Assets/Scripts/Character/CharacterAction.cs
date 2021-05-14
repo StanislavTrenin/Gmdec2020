@@ -16,6 +16,10 @@ public class CharacterAction : MonoBehaviour
     private bool isNextField;
 
     private Character movableCharacter;
+    private static Character staticMovableCharacter;
+    private static int countBot;
+    public static bool IsMoving;
+    public static Action<bool> onMove;
     
     private void Update()
     {
@@ -30,6 +34,11 @@ public class CharacterAction : MonoBehaviour
         
         this.fieldData = fieldData;
         movableCharacter = this.fieldData.ActiveCharacter;
+
+        if (!movableCharacter.isPlayer)
+        {
+            countBot++;
+        }
         
         try
         {
@@ -55,8 +64,18 @@ public class CharacterAction : MonoBehaviour
             }
             characterPositions.Clear();
             movableCharacter = null;
+            
             return;
         }
+
+        if (staticMovableCharacter == null)
+        {
+            staticMovableCharacter = movableCharacter;
+            
+            onMove?.Invoke(true);
+            IsMoving = true;
+        }
+        else if(staticMovableCharacter != movableCharacter) return;
 
         if (isNextField)
         {
@@ -74,6 +93,20 @@ public class CharacterAction : MonoBehaviour
             characterPositions.RemoveAt(0);
             isNextField = true;
             movableCharacter.currentStep++;
+   
+            if (movableCharacter.currentStep >= countStepsCharacter)
+            {
+                countBot--;
+
+                if (countBot <= 0)
+                {
+                    countBot = 0;
+                    onMove?.Invoke(false);
+                    IsMoving = false;
+                }
+                
+                staticMovableCharacter = null;
+            }
         }
     }
 

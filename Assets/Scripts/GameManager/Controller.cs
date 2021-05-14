@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -34,6 +35,7 @@ public class Controller : MonoBehaviour
 
     public Action onLose;
     public Action onWin;
+    public static bool IsPlayerTurn;
 
     private LevelInfo currentLevelInfo;
 

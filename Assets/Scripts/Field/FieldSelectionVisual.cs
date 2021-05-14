@@ -21,15 +21,19 @@ public class FieldSelector
         {
             case PointerEventData.InputButton.Left:
                 
-                if (fieldData.ActiveSkill == null)
+                if (!CharacterAction.IsMoving)
                 {
-                    MoveToField(finishX, finishY, isAi);
-                    fieldData.PrevField = fieldData.Fields[finishX, finishY];
+                    if (fieldData.ActiveSkill == null)
+                    {
+                        MoveToField(finishX, finishY, isAi);
+                        fieldData.PrevField = fieldData.Fields[finishX, finishY];
+                    }
+                    else
+                    {
+                        ApplySkillToField(finishX, finishY);
+                    }
                 }
-                else
-                {
-                    ApplySkillToField(finishX, finishY);
-                }
+
                 break;
             case PointerEventData.InputButton.Right:
                 // TODO: UI with stats
