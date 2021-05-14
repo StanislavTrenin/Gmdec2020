@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -914480693375268137}
   m_Layer: 5
   m_Name: SkillButton
-  m_TagString: Untagged
+  m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}

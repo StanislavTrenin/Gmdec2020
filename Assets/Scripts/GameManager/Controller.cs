@@ -21,7 +21,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject skillButtonInstance;
     [SerializeField] private Transform skillButtonsPanel;
     [SerializeField] private UiManager uiManager;
-
+    [SerializeField] private CharacterBlockActionsVisual characterBlockActions;
     [NonSerialized] public FieldData fieldData;
     private SortedDictionary<int, List<Character>> charactersQueue = new SortedDictionary<int, List<Character>>();
     private SortedDictionary<int, List<Character>> charactersQueue2 = new SortedDictionary<int, List<Character>>();
@@ -36,7 +36,7 @@ public class Controller : MonoBehaviour
 
     public Action onLose;
     public Action onWin;
-    public static bool IsPlayerTurn;
+    
 
     private LevelInfo currentLevelInfo;
     [SerializeField] private AudioManager audioManager;
@@ -162,6 +162,8 @@ public class Controller : MonoBehaviour
             {
                 currentCharacter.UpdateSkillsSteps();
                 List<Skill> skills = currentCharacter.GetActiveSkills();
+                
+                characterBlockActions.SkillButtonList.Clear();
                 foreach (Skill skill in skills)
                 {
                     GameObject skillButtonGO = Instantiate(skillButtonInstance.gameObject, skillButtonsPanel);
@@ -170,6 +172,7 @@ public class Controller : MonoBehaviour
                     skillButton.skill = skill;
                     skillButton.controller = this;
                     skillButton.UpdateText();
+                    characterBlockActions.SkillButtonList.Add(skillButton.gameObject);
                 }
             }
         }

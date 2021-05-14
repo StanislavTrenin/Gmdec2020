@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterEndTurnVisual : MonoBehaviour
+public class CharacterBlockActionsVisual : MonoBehaviour
 {
-    [SerializeField] private Button endTurnButton;
-
+    [SerializeField] private GameObject endTurnObject;
+    public List<GameObject> SkillButtonList = new List<GameObject>();
+    
     private void Start()
     {
         CharacterAction.onMove += SetEndTurnButton;
@@ -20,6 +22,7 @@ public class CharacterEndTurnVisual : MonoBehaviour
 
     private void SetEndTurnButton(bool isPlayerBusy)
     {
-        endTurnButton.interactable = !isPlayerBusy;
+        endTurnObject.SetActive(!isPlayerBusy);
+        SkillButtonList.ForEach(x => x.SetActive(!isPlayerBusy));
     }
 }

@@ -4886,6 +4886,7 @@ MonoBehaviour:
   skillButtonInstance: {fileID: 168740515304035108, guid: 746c9ad815735f248b489d89257fb574, type: 3}
   skillButtonsPanel: {fileID: 213611929}
   uiManager: {fileID: 1314277874}
+  characterBlockActions: {fileID: 1612494882}
   audioManager: {fileID: 280857404}
 --- !u!4 &1612494881
 Transform:
@@ -4913,7 +4914,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf5c1d19812ca8b4fbde24830552a016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endTurnButton: {fileID: 1049628245}
+  endTurnObject: {fileID: 1049628243}
+  SkillButtonList: []
 --- !u!114 &1612494883
 MonoBehaviour:
   m_ObjectHideFlags: 0
